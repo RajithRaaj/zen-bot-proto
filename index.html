@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZEN AI Chatbot Widget</title>
+    <!-- Tailwind CSS CDN for easy styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom CSS for Animations and specific overrides */
+        .chatbot-container {
+            transform-origin: bottom right;
+            transition: all 0.5s ease-in-out; /* Smooth transition for size and position */
+            position: absolute; /* Position within the fixed parent div */
+            bottom: 10rem; /* Adjusted for robot area height + spacing */
+            right: 0; /* Aligned with the right edge of the parent container */
+            z-index: 49; /* Below the robot interaction area when visible */
+        }
+
+        .chatbot-container.hidden {
+            width: 7rem; /* 112px, matching w-28 on image */
+            height: 7rem; /* 112px, matching h-28 on image */
+            opacity: 0;
+            transform: scale(0);
+            pointer-events: none;
+        }
+
+        .chatbot-container.visible {
+            /* Responsive width and height for mobile first */
+            width: calc(100vw - 2rem); /* Full width minus margin on mobile */
+            max-width: 320px; /* Max width for smaller phones (e.g., iPhone SE) */
+            height: calc(100vh - 8rem); /* Max height for mobile screens, leaving space for button/margin */
+            max-height: 500px; /* Cap overall height to make it smaller */
+            opacity: 1;
+            transform: scale(1);
+            z-index: 50; /* Above the robot interaction area when visible */
+        }
+
+        /* Desktop adjustments for chatbot container */
+        @media (min-width: 640px) { /* Tailwind's sm breakpoint */
+            .chatbot-container.visible {
+                width: 20rem; /* 320px fixed width for desktop */
+                height: 500px; /* Fixed height for desktop */
+            }
+        }
+
+        /* Keyframes for initial welcome message fade */
+        @keyframes initial-welcome-fade {
+            0% { opacity: 0; transform: translateY(10px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(10px); }
+        }
+
+        .initial-welcome-animation {
+            animation: initial-welcome-fade 4s ease-in-out forwards; /* Play once and stay at end state (opacity 0) */
+        }
+
+        /* Keyframes for the robot intro flip effect */
+        @keyframes robot-intro-flip {
+            0% { transform: translateY(0) rotateY(0deg); }
+            50% { transform: translateY(-10px) rotateY(180deg); } /* Little hop and half flip */
+            100% { transform: translateY(0) rotateY(360deg); } /* Full flip back to original */
+        }
+
+        .robot-intro-flip {
+            animation: robot-intro-flip 1s ease-out forwards; /* Play once, stay at end state */
+        }
+
+        /* Keyframes for the robot continuous hover effect */
+        @keyframes robot-hover {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); } /* Increased hover distance */
+        }
+
+        .robot-hover-animation {
+            animation: robot-hover 3s ease-in-out infinite; /* Slow, continuous hover */
+        }
+
+        /* Keyframes for the robot periodic flip effect */
+        @keyframes robot-periodic-flip {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+
+        .robot-periodic-flip-animation {
+            animation: robot-periodic-flip 1.2s ease-out forwards; /* Flip once, not too slow */
+        }
+
+        /* Ensure responsive font for Inter, if available */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Styling for the new introductory message widget (Hi! I'm ZEN AI...) */
+        #introductory-message-widget {
+            position: fixed; /* Fixed position relative to viewport */
+            top: 40%; /* Positioned just below halfway down the screen */
+            right: 0.5rem; /* Small padding from the right edge */
+            max-width: 14rem; /* Responsive width */
+            text-align: right; /* Align text to the right */
+            padding: 0.75rem 1rem; /* Good spacing for a rectangle */
+            line-height: 1.3; /* Better line spacing */
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+            white-space: normal; /* Allow text to wrap */
+            border-radius: 1rem; /* Curved rectangle */
+            background-color: #4a5568; /* Tailwind gray-700 equivalent */
+            color: #ffffff; /* Tailwind white equivalent */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Tailwind shadow-lg */
+            opacity: 0; /* Starts hidden for animation */
+            pointer-events: none; /* Prevents clicks on the hidden message */
+            display: flex; /* For aligning icon and text */
+            align-items: center; /* Center items vertically */
+            gap: 0.5rem; /* Space between icon and text */
+            z-index: 52; /* Above other elements */
+        }
+
+        @media (min-width: 640px) {
+            #introductory-message-widget {
+                top: 40%; /* Keep consistent positioning on desktop */
+                max-width: 16rem; /* Slightly wider on desktop */
+                right: 0.5rem; /* Keep consistent */
+            }
+        }
+
+        /* Styling for the new permanent "ZEN AI" name widget */
+        #zen-ai-name-widget {
+            position: absolute;
+            bottom: 0.5rem; /* 0.5rem below the robot image within the toggle button */
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #4a5568; /* Dark gray for the text */
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem; /* Good size for the name */
+            font-weight: 600; /* Semi-bold */
+            background-color: #f7fafc; /* Light gray/white background, matching Tailwind gray-50 */
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.5rem; /* Slightly rounded corners */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 52; /* Above the robot image, but below the iframe */
+        }
+    </style>
+</head>
+<body class="font-sans">
+
+    <div class="fixed bottom-4 right-4 z-50">
+        <!-- Chatbot Container -->
+        <div id="chatbot-iframe-container"
+             class="chatbot-container hidden bg-white shadow-2xl rounded-xl overflow-hidden">
+            <!-- Back Button inside the chatbot container -->
+            <button id="chatbot-back-button"
+                    class="absolute top-2 right-2 p-1 rounded-full bg-gray-700 text-white hover:bg-gray-600 focus:outline-none z-55">
+                <!-- 'X' Icon for closing -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x">
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                </svg>
+            </button>
+            <iframe
+                src="https://www.chatbase.co/chatbot-iframe/CF7FfSgCkHx2PsyfrrJ8Y"
+                width="100%"
+                style="height: 100%;"
+                frameborder="0"
+                title="ZEN AI Chatbot"
+            ></iframe>
+        </div>
+
+        <!-- Robot Interaction Area (contains image and ZEN AI text) -->
+        <button id="robot-interaction-area"
+                class="absolute bottom-0 right-0 p-0 bg-transparent border-none cursor-pointer
+                       flex flex-col items-center justify-end
+                       transition-all duration-300 ease-in-out
+                       hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300
+                       w-28 h-auto pb-8" /* w-28 for image, h-auto and pb-8 for text below it */
+                style="z-index: 51;"
+                aria-label="Open ZEN AI chatbot">
+            <!-- Robot Image Icon (this is where animations will apply) -->
+            <img id="robot-icon"
+                 src="https://i.ibb.co/S4ySFFpX/Gemini-Generated-Image-gwt4kcgwt4kcgwt4-removebg-preview.png"
+                 alt="ZEN AI Robot Icon"
+                 class="w-full h-28 object-contain" /* Specific height for image */
+                 onerror="this.onerror=null;this.src='https://placehold.co/112x112/gray/white?text=AI'"> <!-- Fallback image, size updated -->
+
+            <!-- Permanent "ZEN AI" Name Widget -->
+            <div id="zen-ai-name-widget">
+                <span>ZEN AI</span>
+            </div>
+        </button>
+    </div>
+
+    <!-- Introductory Message Widget (Separate fixed element) -->
+    <div id="introductory-message-widget">
+        <!-- Robot image inside message -->
+        <img src="https://i.ibb.co/S4ySFFpX/Gemini-Generated-Image-gwt4kcgwt4kcgwt4-removebg-preview.png"
+             alt="ZEN AI Robot"
+             class="w-6 h-6 object-contain"
+             onerror="this.onerror=null;this.src='https://placehold.co/24x24/gray/white?text=AI'"> <!-- Fallback image -->
+        <span>Hi! I'm ZEN AI. I can help you to choose...🪄💯</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const robotInteractionArea = document.getElementById('robot-interaction-area'); // The main clickable area (button)
+            const iframeContainer = document.getElementById('chatbot-iframe-container');
+            const robotImage = document.getElementById('robot-icon'); // The actual <img> inside the button
+            const introductoryMessageWidget = document.getElementById('introductory-message-widget');
+            const backButton = document.getElementById('chatbot-back-button');
+
+            let isOpen = false;
+            // Use localStorage to ensure flags persist across user sessions
+            let introductoryMessageShown = localStorage.getItem('zenAiIntroductoryMessageShown') === 'true';
+            let isInitialFlipPlayed = localStorage.getItem('zenAiChatbotFlipPlayed') === 'true';
+            let periodicFlipTimerId; // To store the ID of the setTimeout for periodic flip
+
+            // Function to start the periodic flip sequence
+            const startPeriodicFlip = () => {
+                // Clear any existing timer to prevent duplicates
+                stopPeriodicFlip();
+
+                periodicFlipTimerId = setTimeout(() => {
+                    if (!isOpen) { // Only flip if chatbot is closed
+                        robotImage.classList.remove('robot-hover-animation'); // Pause hover on the image
+                        robotImage.classList.add('robot-periodic-flip-animation'); // Start flip on the image
+
+                        const onFlipAnimationEnd = (event) => {
+                            if (event.animationName === 'robot-periodic-flip') {
+                                robotImage.classList.remove('robot-periodic-flip-animation'); // Remove flip class
+                                robotImage.removeEventListener('animationend', onFlipAnimationEnd); // Remove listener
+
+                                if (!isOpen) { // If still closed, resume hover and schedule next flip
+                                    robotImage.classList.add('robot-hover-animation');
+                                    startPeriodicFlip(); // Schedule the next flip
+                                }
+                            }
+                        };
+                        robotImage.addEventListener('animationend', onFlipAnimationEnd);
+                    }
+                }, 10000); // 10-second interval
+            };
+
+            // Function to stop the periodic flip timer and remove animations
+            const stopPeriodicFlip = () => {
+                clearTimeout(periodicFlipTimerId);
+                robotImage.classList.remove('robot-periodic-flip-animation'); // Ensure flip animation is removed
+                robotImage.classList.remove('robot-hover-animation'); // Ensure hover is stopped
+            };
+
+            // Function to manage robot icon's animations (hover and initial flip/periodic flip)
+            const updateRobotAnimations = () => {
+                if (isOpen) {
+                    robotInteractionArea.classList.add('hidden'); // Hide the entire robot area when chatbot is open
+                    stopPeriodicFlip(); // Stop all periodic animations
+                    robotImage.classList.remove('robot-intro-flip'); // Ensure intro flip is removed
+                } else {
+                    robotInteractionArea.classList.remove('hidden'); // Show robot area when chatbot is closed
+                    if (isInitialFlipPlayed) { // If intro flip has played, start hover and schedule periodic flip
+                        robotImage.classList.add('robot-hover-animation'); // Start hover on the image
+                        startPeriodicFlip(); // Start periodic flip
+                    }
+                    // If initial flip has not played, it will be handled by playInitialRobotFlip
+                }
+            };
+
+            // Function to play the one-time robot intro flip animation
+            const playInitialRobotFlip = () => {
+                if (!isInitialFlipPlayed) {
+                    robotImage.classList.add('robot-intro-flip');
+                    const onIntroFlipEnd = (event) => {
+                        if (event.animationName === 'robot-intro-flip') {
+                            robotImage.classList.remove('robot-intro-flip');
+                            robotImage.removeEventListener('animationend', onIntroFlipEnd); // Remove listener
+                            isInitialFlipPlayed = true;
+                            localStorage.setItem('zenAiChatbotFlipPlayed', 'true');
+                            updateRobotAnimations(); // After flip, apply hover and schedule periodic flip
+                        }
+                    };
+                    robotImage.addEventListener('animationend', onIntroFlipEnd);
+                } else {
+                    updateRobotAnimations(); // If intro flip already played, apply hover and schedule periodic flip immediately
+                }
+            };
+
+            // Function to toggle the chatbot's visibility
+            const toggleChat = () => {
+                isOpen = !isOpen; // Toggle the open state
+
+                if (isOpen) {
+                    // Open the chatbot
+                    iframeContainer.classList.remove('hidden');
+                    iframeContainer.classList.add('visible');
+                    introductoryMessageWidget.classList.add('opacity-0'); // Hide introductory message when chatbot is open
+                    robotInteractionArea.setAttribute('aria-label', 'Close ZEN AI chatbot');
+                } else {
+                    // Close the chatbot
+                    iframeContainer.classList.remove('visible');
+                    iframeContainer.classList.add('hidden');
+                    introductoryMessageWidget.classList.add('opacity-0'); // Ensure message is hidden after first view
+
+                    robotInteractionArea.setAttribute('aria-label', 'Open ZEN AI chatbot');
+                }
+                updateRobotAnimations(); // Update robot icon visibility and animations
+            };
+
+            // Event listener for the main robot interaction area (button)
+            robotInteractionArea.addEventListener('click', toggleChat);
+
+            // Event listener for the new back button inside the iframe
+            backButton.addEventListener('click', toggleChat);
+
+            // Initial setup on DOMContentLoaded for the introductory message
+            if (!introductoryMessageShown) {
+                // Trigger the animation by removing opacity-0
+                void introductoryMessageWidget.offsetWidth; // Force reflow
+                introductoryMessageWidget.classList.add('initial-welcome-animation');
+                const onWelcomeMessageEnd = (event) => {
+                    if (event.animationName === 'initial-welcome-fade') {
+                        introductoryMessageWidget.classList.remove('initial-welcome-animation');
+                        introductoryMessageWidget.style.opacity = '0'; // Ensure it stays hidden after animation
+                        introductoryMessageShown = true;
+                        localStorage.setItem('zenAiIntroductoryMessageShown', 'true');
+                        playInitialRobotFlip(); // Chain to the robot flip animation
+                    }
+                };
+                introductoryMessageWidget.addEventListener('animationend', onWelcomeMessageEnd, { once: true });
+            } else {
+                // If introductory message has already been shown, ensure it's hidden
+                introductoryMessageWidget.style.opacity = '0';
+                playInitialRobotFlip(); // Directly play the robot flip
+            }
+        });
+    </script>
+</body>
+</html>
