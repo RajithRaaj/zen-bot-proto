@@ -53,7 +53,7 @@
         }
 
         .initial-welcome-animation {
-            animation: initial-welcome-fade 4s ease-in-out forwards; /* Play once and stay at end state (opacity 0) */
+            animation: initial-welcome-fade 10s ease-in-out forwards; /* Changed duration to 10s for 8s visible */
         }
 
         /* Keyframes for the robot intro flip effect */
@@ -95,7 +95,7 @@
         /* Styling for the new introductory message widget (Hi! I'm ZEN AI...) */
         #introductory-message-widget {
             position: fixed; /* Fixed position relative to viewport */
-            top: 40%; /* Positioned just below halfway down the screen */
+            top: 50%; /* Adjusted to 50% for lower positioning */
             right: 0.5rem; /* Small padding from the right edge */
             max-width: 14rem; /* Responsive width */
             text-align: right; /* Align text to the right */
@@ -117,7 +117,7 @@
 
         @media (min-width: 640px) {
             #introductory-message-widget {
-                top: 40%; /* Keep consistent positioning on desktop */
+                top: 50%; /* Keep consistent positioning on desktop */
                 max-width: 16rem; /* Slightly wider on desktop */
                 right: 0.5rem; /* Keep consistent */
             }
