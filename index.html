@@ -3,28 +3,1654 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZEN AI Chatbot Widget</title>
-    <!-- Tailwind CSS CDN for easy styling -->
+    <title>Zenora - Advanced Digital Ecosystem & Solutions</title>
+    <meta name="description" content="Zenora offers cutting-edge web development, innovative digital portals, smart business cards, and health solutions. Build your online empire with Zenora's mobile-first, SEO-optimized digital ecosystem.">
+    <!-- Favicon placeholder -->
+    <link rel="icon" href="https://placehold.co/32x32/1a1a2e/e0e0e0?text=ZN" type="image/x-icon">
+    <!-- Google Fonts for a modern, slightly futuristic look (Inter for body, Orbitron for headings) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Tailwind CSS CDN for the new chatbot styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Custom CSS for Animations and specific overrides */
+        /* CSS Variables for Sci-Fi Theme */
+        :root {
+            --bg-dark: #0A0A1F; /* Very dark blue/black background */
+            --bg-medium: #1A1A2E; /* Slightly lighter dark blue for cards/sections */
+            --bg-light: #2A2A4E; /* Even lighter for secondary elements */
+            --accent-blue: #00BFFF; /* Deep Sky Blue - vibrant accent */
+            --accent-purple: #8A2BE2; /* Blue Violet - secondary vibrant accent */
+            --text-light: #E0E0E0; /* Light gray for general text */
+            --text-medium: #A0A0A0; /* Medium gray for descriptions */
+            --text-dark: #333333; /* Dark text on light backgrounds (if any) */
+            --border-glow: #00CFFF; /* Cyan for glowing borders */
+            --error-red: #FF4136; /* Red for error messages */
+            --success-green: #2ECC40; /* Green for success messages */
+            /* Spacing */
+            --spacing-xs: 5px;
+            --spacing-sm: 10px;
+            --spacing-md: 20px;
+            --spacing-lg: 40px;
+            --spacing-xl: 80px;
+            /* Border Radius */
+            --border-radius-sm: 5px;
+            --border-radius-md: 10px;
+            --border-radius-lg: 15px;
+            /* Transition */
+            --transition-speed: 0.3s;
+            --transition-ease: ease-in-out;
+        }
+        /* Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html {
+            scroll-behavior: smooth; /* Smooth scrolling for navigation */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+         color: var(--accent-blue) !important; 
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1; /* Place behind content */
+            pointer-events: none; /* Allow clicks to pass through */
+            opacity: 0.7; /* Subtle background */
+        }
+        /* General Layout */
+        .container {
+            width: 96%; /* Increased for wider content area */
+            max-width: 1300px; /* Increased max-width */
+            margin: 0 auto;
+            padding: var(--spacing-md);
+        }
+        .p-lg { padding: var(--spacing-lg); }
+        .mt-sm { margin-top: var(--spacing-sm); }
+        .mt-md { margin-top: var(--spacing-md); }
+        .mt-lg { margin-top: var(--spacing-lg); }
+        .mb-sm { margin-bottom: var(--spacing-sm); }
+        .mb-md { margin-bottom: var(--spacing-md); }
+        .mb-lg { margin-bottom: var(--spacing-lg); }
+        .text-center { text-align: center; }
+        .hidden { display: none !important; }
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent-blue);
+            margin-bottom: var(--spacing-md);
+            text-shadow: 0 0 5px rgba(0, 191, 255, 0.5); /* Subtle glow effect */
+        }
+        h1 { font-size: 2.8em; }
+        h2 { font-size: 2.2em; }
+        h3 { font-size: 1.8em; }
+        h4 { font-size: 1.4em; }
+        p {
+            color: var(--text-medium);
+            margin-bottom: var(--spacing-sm);
+        }
+        a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            transition: color var(--transition-speed) var(--transition-ease);
+        }
+        a:hover {
+            color: var(--accent-purple);
+            text-decoration: underline;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+            font-size: 2.5em;
+            color: var(--accent-blue);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent-blue);
+            box-shadow: 0 0 10px var(--border-glow);
+            border-radius: var(--border-radius-sm);
+        }
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius-md);
+            text-transform: uppercase;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all var(--transition-speed) var(--transition-ease);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            font-family: 'Orbitron', sans-serif;
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+            color: var(--text-light);
+            border-color: var(--accent-blue);
+        }
+        .btn-primary:hover {
+            background: linear-gradient(45deg, var(--accent-purple), var(--accent-blue));
+            border-color: var(--border-glow);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 191, 255, 0.4);
+        }
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+        .btn-secondary:hover {
+            background-color: rgba(0, 191, 255, 0.1);
+            color: var(--border-glow);
+            border-color: var(--border-glow);
+            transform: translateY(-2px) scale(1.02);
+        }
+        .btn-remove {
+            background-color: var(--error-red);
+            color: var(--text-light);
+            border-color: var(--error-red);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            font-size: 0.9em;
+            text-transform: capitalize;
+        }
+        .btn-remove:hover {
+            background-color: #E21B00;
+            border-color: #E21B00;
+            transform: translateY(-1px) scale(1.01);
+        }
+        .btn-checkout {
+            width: 100%;
+            background: linear-gradient(90deg, #2ECC40, #17A2B8); /* Green to Teal gradient */
+            border-color: #2ECC40;
+            color: white;
+            font-size: 1.1em;
+            padding: var(--spacing-md);
+            margin-top: var(--spacing-md);
+        }
+        .btn-checkout:hover {
+            background: linear-gradient(90deg, #17A2B8, #2ECC40);
+            border-color: #17A2B8;
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 8px 25px rgba(46, 204, 64, 0.5);
+        }
+        .btn-add-to-cart {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: var(--border-radius-sm);
+            background-color: var(--accent-blue);
+            color: var(--text-light);
+            border: none;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color var(--transition-speed) var(--transition-ease), transform var(--transition-speed) var(--transition-ease);
+        }
+        .btn-add-to-cart:hover {
+            background-color: var(--border-glow);
+            transform: translateY(-2px);
+        }
+        /* Back Button on PDP */
+        .back-button {
+            position: relative; /* Changed from absolute to relative for flow */
+            margin-bottom: var(--spacing-md); /* Add margin to separate from content */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px; /* Circular button size */
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--accent-purple);
+            color: var(--text-light);
+            font-size: 1.2em;
+            border: 2px solid var(--accent-purple);
+            box-shadow: 0 4px 10px rgba(138, 43, 226, 0.3);
+            transition: all var(--transition-speed) var(--transition-ease);
+            cursor: pointer;
+            z-index: 10;
+        }
+        .back-button:hover {
+            background-color: var(--accent-blue);
+            border-color: var(--border-glow);
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 191, 255, 0.4);
+        }
+        .back-button i {
+            margin-right: 0; /* No text, so no margin on icon */
+        }
+
+        /* Icons */
+        .icon-star, .icon-star-half, .icon-star-empty {
+            color: #FFD700; /* Gold color for stars */
+            font-size: 1.2em;
+            margin-right: 2px;
+        }
+        .icon-star-empty {
+            color: var(--text-medium);
+            opacity: 0.5;
+        }
+        .icon-website-dev::before { content: '\f108'; font-family: 'Font Awesome 6 Free'; font-weight: 900; } /* Laptop icon */
+        .icon-digital-portal::before { content: '\f0e8'; font-family: 'Font Awesome 6 Free'; font-weight: 900; } /* Link/Chain icon */
+        .icon-business-card::before { content: '\f2c2'; font-family: 'Font Awesome 6 Free'; font-weight: 900; } /* Id card icon */
+        .icon-health::before { content: '\f440'; font-family: 'Font Awesome 6 Free'; font-weight: 900; } /* Heartbeat icon */
+        .icon-qr::before { content: '\f029'; font-family: 'Font Awesome 6 Free'; font-weight: 900; } /* QR code icon */
+        .icon-cloud::before { content: '\f0c2'; font-family: 'Font Awesome 6 Free'; font-weight: 900; } /* Cloud upload icon */
+        .icon-network::before { content: '\f6ff'; font-family: 'Font Awesome 6 Free'; font-weight: 900; } /* Network wired icon */
+        .icon-innovation::before { content: '\f0eb'; font-family: 'Font Awesome 6 Free'; font-weight: 900; } /* Lightbulb icon */
+        .icon-whatsapp::before { content: '\f232'; font-family: 'Font Awesome 6 Brands'; } /* WhatsApp icon */
+        .icon-youtube::before { content: '\f167'; font-family: 'Font Awesome 6 Brands'; } /* YouTube icon */
+        /* Stack Icons - Using FontAwesome for common dev tools/languages */
+        .icon-html::before { content: '\f13b'; font-family: 'Font Awesome 6 Brands'; color: #e34c26; } /* HTML5 */
+        .icon-css::before { content: '\f13c'; font-family: 'Font Awesome 6 Brands'; color: #264de4; } /* CSS3 */
+        .icon-js::before { content: '\f3b8'; font-family: 'Font Awesome 6 Brands'; color: #f7df1e; } /* JavaScript */
+        .icon-react::before { content: '\f41b'; font-family: 'Font Awesome 6 Brands'; color: #61dafb; } /* React */
+        .icon-firebase::before { content: '\f06d'; font-family: 'Font Awesome 6 Brands'; font-weight: 900; color: #ffca28; } /* Fire symbol, often used for Firebase */
+        .icon-vercel::before { content: '\f0ac'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: #000; background: #fff; border-radius: 50%; padding: 2px; } /* Globe, placeholder for Vercel */
+        .icon-github::before { content: '\f09b'; font-family: 'Font Awesome 6 Brands'; color: #fff; } /* GitHub */
+        /* Header */
+        .header {
+            background-color: var(--bg-dark);
+            padding: var(--spacing-md) 0;
+            border-bottom: 1px solid rgba(0, 191, 255, 0.1);
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            transition: background-color 0.3s ease;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8em;
+            color: var(--accent-blue);
+            font-weight: 700;
+            text-shadow: 0 0 8px rgba(0, 191, 255, 0.7);
+            margin-right: var(--spacing-md);
+        }
+        .nav-links {
+            display: flex;
+            gap: var(--spacing-md);
+            flex-grow: 1; /* Allow nav links to take available space */
+            justify-content: center;
+            margin: var(--spacing-sm) 0; /* Add some margin for smaller screens */
+        }
+        .nav-links a {
+            color: var(--text-light);
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: var(--border-radius-sm);
+            transition: all var(--transition-speed) var(--transition-ease);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent-purple);
+            transform: translateX(-100%);
+            transition: transform var(--transition-speed) var(--transition-ease);
+        }
+        .nav-links a:hover::before {
+            transform: translateX(0);
+        }
+        .nav-links a:hover {
+            color: var(--accent-blue);
+            text-shadow: 0 0 5px rgba(0, 191, 255, 0.3);
+        }
+        .cart-icon {
+            position: relative;
+            font-size: 1.5em;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: color var(--transition-speed) var(--transition-ease), transform var(--transition-speed) var(--transition-ease);
+        }
+        .cart-icon:hover {
+            color: var(--accent-blue);
+            transform: scale(1.1);
+        }
+        .cart-item-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--error-red);
+            color: white;
+            font-size: 0.7em;
+            font-weight: bold;
+            border-radius: 50%;
+            padding: 3px 6px;
+            min-width: 20px;
+            text-align: center;
+        }
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            height: 60vh; /* Adjust height for mobile visibility */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            text-align: center;
+            overflow: hidden; /* For carousel */
+            background-color: var(--bg-medium);
+            border-bottom: 1px solid rgba(0, 191, 255, 0.1);
+            box-shadow: inset 0 -10px 20px rgba(0, 191, 255, 0.05);
+        }
+        .hero-carousel {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+        .carousel-item {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: var(--spacing-md);
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth slide transition */
+            opacity: 0;
+            animation: fadeIn 0.8s forwards; /* Initial fade in */
+        }
+        .carousel-item.active {
+            opacity: 1;
+        }
+        .carousel-item h1 {
+            font-size: 2.5em;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-light);
+            text-shadow: 0 0 15px var(--accent-blue);
+            max-width: 90%;
+        }
+        .carousel-item p {
+            font-size: 1.1em;
+            margin-bottom: var(--spacing-md);
+            color: var(--text-medium);
+            max-width: 80%;
+        }
+        /* Specific carousel item backgrounds */
+        .carousel-item.item-1 { background-image: linear-gradient(rgba(10, 10, 31, 0.7), rgba(10, 10, 31, 0.7)), url('https://placehold.co/1200x600/007bff/ffffff?text=Digital+Empire'); }
+        .carousel-item.item-2 { background-image: linear-gradient(rgba(10, 10, 31, 0.7), rgba(10, 10, 31, 0.7)), url('https://placehold.co/1200x600/6f42c1/ffffff?text=Digital+Identity'); }
+        .carousel-item.item-3 { background-image: linear-gradient(rgba(10, 10, 31, 0.7), rgba(10, 10, 31, 0.7)), url('https://placehold.co/1200x600/28a745/ffffff?text=Connect+Smarter'); }
+        .carousel-dots {
+            position: absolute;
+            bottom: var(--spacing-md);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--text-medium);
+            cursor: pointer;
+            transition: background-color var(--transition-speed) var(--transition-ease), transform var(--transition-speed) var(--transition-ease);
+            border: 1px solid rgba(0, 191, 255, 0.3);
+        }
+        .dot.active {
+            background-color: var(--accent-blue);
+            transform: scale(1.2);
+            box-shadow: 0 0 8px var(--border-glow);
+        }
+        /* Category Shortcuts / Cards */
+        /* Modified for single column layout */
+        .category-shortcuts, .product-grid, .add-on-grid, .social-icons, .contact-details-grid, .client-grid {
+            display: grid;
+            gap: var(--spacing-md);
+            grid-template-columns: 1fr; /* Force single column always */
+            margin-top: var(--spacing-md);
+        }
+
+        .category-card, .product-card, .add-on-card, .social-icon-card, .client-card {
+            background-color: var(--bg-medium);
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius-lg);
+            text-align: center;
+            border: 1px solid rgba(138, 43, 226, 0.1); /* Subtle purple border */
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            transition: transform var(--transition-speed) var(--transition-ease), box-shadow var(--transition-speed) var(--transition-ease), background-color var(--transition-speed) var(--transition-ease);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-decoration: none; /* For category-card as it's an anchor */
+        }
+        .category-card:hover, .product-card:hover, .add-on-card:hover, .social-icon-card:hover, .client-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(0, 191, 255, 0.4);
+            background-color: var(--bg-light);
+            border-color: var(--border-glow);
+        }
+        .category-card span, .social-icon-card i {
+            font-size: 3em;
+            color: var(--accent-blue);
+            margin-bottom: var(--spacing-sm);
+            text-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+            transition: color var(--transition-speed) var(--transition-ease);
+        }
+        .category-card:hover span, .social-icon-card:hover i {
+            color: var(--accent-purple);
+        }
+        .category-card h3 {
+            margin-bottom: var(--spacing-xs);
+            color: var(--text-light);
+            font-size: 1.5em;
+        }
+        .category-card p {
+            font-size: 0.9em;
+            color: var(--text-medium);
+        }
+        /* Client Cards for Grid */
+        .client-card {
+            cursor: pointer;
+            text-align: left;
+            /* Ensure aspect ratio similar to product cards */
+            width: 100%;
+            height: auto; /* Allow height to adjust */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .client-card-image {
+            width: 100%;
+            height: 180px; /* Fixed height for consistency */
+            object-fit: cover;
+            border-radius: var(--border-radius-md);
+            margin-bottom: var(--spacing-sm);
+            border: 1px solid rgba(0, 191, 255, 0.1);
+        }
+        .client-card h3 {
+            font-size: 1.4em;
+            margin-bottom: var(--spacing-xs);
+            color: var(--text-light);
+            text-shadow: none;
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+        .client-card p {
+            font-size: 0.9em;
+            color: var(--text-medium);
+            flex-grow: 1; /* Allow description to take space */
+            margin-bottom: var(--spacing-sm);
+        }
+        /* Product Cards for Grid */
+        .product-card-image {
+            width: 100%;
+            height: 200px; /* Fixed height for consistency */
+            object-fit: cover;
+            border-radius: var(--border-radius-md);
+            margin-bottom: var(--spacing-sm);
+            border: 1px solid rgba(0, 191, 255, 0.1);
+        }
+        .product-card-content {
+            padding: var(--spacing-sm); /* Keep this consistent, will adjust container */
+            text-align: left;
+            flex-grow: 1; /* Allows content to push actions to bottom */
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        .product-card h3 {
+            font-size: 1.4em;
+            margin-bottom: var(--spacing-xs);
+            color: var(--text-light);
+            text-shadow: none;
+        }
+        .product-card .description-snippet {
+            font-size: 0.9em;
+            color: var(--text-medium);
+            margin-bottom: var(--spacing-sm);
+            flex-grow: 1; /* Allows description to take space */
+        }
+        .product-card .rating {
+            margin-bottom: var(--spacing-sm);
+        }
+        .product-card-price {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: var(--spacing-md);
+        }
+        .product-card-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+            justify-content: center;
+            width: 100%;
+            flex-wrap: wrap; /* Allow buttons to wrap on small screens */
+        }
+        .product-card-actions .btn {
+            flex-grow: 1; /* Distribute space evenly */
+            min-width: 120px; /* Ensure buttons don't get too small */
+        }
+        /* Testimonials Section (Now Marquee) */
+        
+      { /* Now used for 'Other Clients' on Client Detail Page */
+            background-color: var(--bg-medium);
+            padding: var(--spacing-lg) 0;
+            border-top: 1px solid rgba(0, 191, 255, 0.1);
+            border-bottom: 1px solid rgba(0, 191, 255, 0.1);
+            box-shadow: inset 0 10px 20px rgba(0, 0, 0, 0.1), inset 0 -10px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden; /* Hide anything outside */
+            height: 220px; /* Increased height for better visibility on mobile */
+            display: flex;
+            align-items: center;
+            margin-top: var(--spacing-xl); /* Ensure spacing below other sections */
+}
+
+.testimonials-section .section-title {
+    text-align: center;
+    /* Changed: Reverted margin-bottom to var(--spacing-md) as per previous "good" state */
+    margin-bottom: var(--spacing-md); 
+    font-size: 2.5em;
+    color: var(--accent-blue);
+    /* Removed: position, top, left, transform, z-index, width, background-color, padding-bottom */
+}
+.marquee-inner {
+    display: block;
+}
+
+.testimonial-item-marquee {
+    flex-shrink: 0;
+    /* Change width for responsiveness: */
+    width: 90%; /* Take 90% of the available width */
+    max-width: 400px; /* Cap the width at 400px on larger screens */
+    /* Changed: Removed horizontal margin to rely on gap for spacing */
+margin: 0 auto var(--spacing-md) auto;
+    /* ... rest of your styles ... */
+}
+
+/* Optional: For extremely small screens, you might want to adjust width further */
+@media (max-width: 480px) {
+    .testimonial-item-marquee {
+        width: calc(100% - (var(--spacing-md) * 2)); /* Full width minus left/right margins */
+        /* Margin remains 0 here too, as gap handles spacing */
+       margin: 0 auto var(--spacing-md) auto;
+    }
+}
+.testimonial-item-marquee .testimonial-text {
+    font-style: italic;
+    font-size: 1em;
+    color: var(--text-light);
+    margin-bottom: var(--spacing-sm);
+    white-space: normal; /* Allow text to wrap */
+}
+.testimonial-item-marquee .testimonial-author {
+    font-weight: 600;
+    color: var(--accent-blue);
+    font-size: 0.9em;
+}
+/* Product Listing Page (PLP) */
+.breadcrumbs {
+    font-size: 0.9em;
+    color: var(--text-medium);
+    margin-bottom: var(--spacing-md);
+}
+.product-listing-layout {
+display: block;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+.sidebar {
+    flex: 1;
+    max-width: 250px;
+    background-color: var(--bg-medium);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    border: 1px solid rgba(138, 43, 226, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+.sidebar h3 {
+    color: var(--accent-blue);
+    margin-bottom: var(--spacing-md);
+    text-shadow: none;
+}
+.filter-group {
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px dashed rgba(0, 191, 255, 0.1);
+}
+.filter-group:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+.filter-group h4 {
+    color: var(--text-light);
+    margin-bottom: var(--spacing-sm);
+    font-size: 1.1em;
+}
+.filter-group label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    cursor: pointer;
+    color: var(--text-medium);
+}
+.filter-group input[type="radio"],
+.filter-group input[type="checkbox"] {
+    margin-right: 8px;
+    accent-color: var(--accent-blue);
+}
+.product-content {
+    flex: 4;
+    min-width: 300px;
+}
+.sorting-options {
+    text-align: right;
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.sorting-options label {
+    color: var(--text-light);
+    font-weight: 600;
+}
+.sorting-options select {
+    padding: 8px 12px;
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--accent-blue);
+    background-color: rgba(30, 30, 60, 0.8);
+    color: var(--text-light);
+    font-family: 'Inter', sans-serif;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%2300BFFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 8px top 50%;
+    background-size: 16px auto;
+    cursor: pointer;
+    transition: border-color var(--transition-speed) var(--transition-ease);
+}
+.sorting-options select:hover {
+    border-color: var(--border-glow);
+}
+/* Product Detail Page (PDP) */
+.pdp-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+    background-color: var(--bg-medium);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid rgba(0, 191, 255, 0.1);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+.pdp-image-gallery {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: center;
+}
+.main-product-image, .client-detail-main-image {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: var(--border-radius-md);
+    border: 2px solid var(--accent-blue);
+    box-shadow: 0 0 15px rgba(0, 191, 255, 0.6);
+    transition: transform 0.3s ease-in-out;
+}
+.main-product-image:hover, .client-detail-main-image:hover {
+    transform: scale(1.01);
+}
+.thumbnail-images {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.thumbnail-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: var(--border-radius-sm);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all var(--transition-speed) var(--transition-ease);
+}
+.thumbnail-image.active,
+.thumbnail-image:hover {
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 10px rgba(138, 43, 226, 0.7);
+    transform: scale(1.05);
+}
+.pdp-details {
+    flex: 2;
+    min-width: 300px;
+}
+.pdp-details h1 {
+    font-size: 2.5em;
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-light);
+    text-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+}
+.pdp-details .rating {
+    margin-bottom: var(--spacing-md);
+    font-size: 1.1em;
+    color: var(--text-medium);
+}
+.pdp-details .price {
+    font-size: 2em;
+    font-weight: 700;
+    color: var(--accent-blue);
+    margin-bottom: var(--spacing-md);
+    text-shadow: 0 0 5px rgba(0, 191, 255, 0.7);
+}
+.pdp-details .short-description {
+    font-size: 1.1em;
+    color: var(--text-light);
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px dashed rgba(0, 191, 255, 0.1);
+}
+.pdp-features h3 {
+    font-size: 1.3em;
+    color: var(--accent-purple);
+    margin-bottom: var(--spacing-sm);
+    text-shadow: none;
+}
+.pdp-features ul {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+    margin-bottom: var(--spacing-lg);
+}
+.pdp-features ul li {
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 8px;
+    color: var(--text-medium);
+}
+.pdp-features ul li::before {
+    content: '\f00c'; /* Checkmark icon */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: var(--success-green);
+    position: absolute;
+    left: 0;
+    top: 2px;
+    font-size: 0.9em;
+}
+.pdp-cta-section {
+    margin-top: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+/* Tabs */
+.product-tabs {
+    margin-top: var(--spacing-lg);
+    background-color: var(--bg-medium);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid rgba(0, 191, 255, 0.1);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+.tab-buttons {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid rgba(0, 191, 255, 0.2);
+    flex-wrap: wrap;
+}
+.tab-button {
+    flex: 1;
+    background-color: transparent;
+    border: none;
+    padding: var(--spacing-md) var(--spacing-sm);
+    color: var(--text-medium);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all var(--transition-speed) var(--transition-ease);
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.tab-button::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--accent-blue);
+    transform: scaleX(0);
+    transform-origin: bottom center;
+    transition: transform var(--transition-speed) var(--transition-ease);
+}
+.tab-button:hover {
+    color: var(--accent-blue);
+}
+.tab-button.active {
+    color: var(--accent-blue);
+    font-weight: 700;
+    background-color: var(--bg-light);
+}
+.tab-button.active::after {
+    transform: scaleX(1);
+}
+.tab-content {
+    padding: var(--spacing-md);
+    animation: fadeIn 0.5s var(--transition-ease);
+    overflow-x: auto;
+}
+.tab-content h3 {
+    color: var(--accent-blue);
+    font-size: 1.5em;
+    margin-bottom: var(--spacing-sm);
+    text-shadow: none;
+}
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--spacing-sm);
+    min-width: 500px;
+}
+.comparison-table th, .comparison-table td {
+    border: 1px solid rgba(0, 191, 255, 0.1);
+    padding: 12px;
+    text-align: left;
+    color: var(--text-light);
+}
+.comparison-table th {
+    background-color: rgba(0, 191, 255, 0.15);
+    font-family: 'Orbitron', sans-serif;
+    color: var(--accent-blue);
+    font-weight: 600;
+}
+.comparison-table tr:nth-child(even) {
+    background-color: rgba(0, 191, 255, 0.05);
+}
+        /* Add-on Features Section */
+        .add-on-features-section {
+            margin-top: var(--spacing-lg);
+            padding: var(--spacing-lg) var(--spacing-md);
+            background-color: var(--bg-medium);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid rgba(138, 43, 226, 0.1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+        .add-on-features-section h3 {
+            text-align: center;
+            margin-bottom: var(--spacing-md);
+            color: var(--accent-purple);
+        }
+        .add-on-card {
+            background-color: var(--bg-light);
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius-md);
+            border: 1px dashed rgba(138, 43, 226, 0.3);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+            text-align: left;
+        }
+        .add-on-card h4 {
+            color: var(--text-light);
+            font-size: 1.3em;
+            margin-bottom: var(--spacing-xs);
+            text-shadow: none;
+        }
+        .add-on-card p {
+            font-size: 0.9em;
+            color: var(--text-medium);
+            margin-bottom: var(--spacing-sm);
+        }
+        .add-on-card .price {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--success-green);
+            margin-bottom: var(--spacing-md);
+        }
+        /* Cart Page */
+        .cart-page-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-md);
+        }
+        .cart-items {
+            flex: 2;
+            min-width: 300px;
+            background-color: var(--bg-medium);
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid rgba(0, 191, 255, 0.1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px dashed rgba(0, 191, 255, 0.1);
+            margin-bottom: var(--spacing-sm);
+        }
+        .cart-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid rgba(0, 191, 255, 0.2);
+        }
+        .cart-item-details {
+            flex-grow: 1;
+        }
+        .cart-item-details h3 {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+            color: var(--text-light);
+            text-shadow: none;
+        }
+        .cart-item-price {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--accent-blue);
+        }
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        .cart-item-actions input[type="number"] {
+            width: 60px;
+            padding: 8px;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--accent-blue);
+            background-color: rgba(30, 30, 60, 0.8);
+            color: var(--text-light);
+            text-align: center;
+        }
+        .cart-summary {
+            flex: 1;
+            min-width: 280px;
+            background-color: var(--bg-medium);
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid rgba(138, 43, 226, 0.1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+        .cart-summary h3 {
+            text-align: center;
+            margin-bottom: var(--spacing-md);
+            color: var(--accent-purple);
+            text-shadow: none;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed rgba(0, 191, 255, 0.1);
+            color: var(--text-light);
+        }
+        .summary-row.total {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--accent-blue);
+            border-bottom: none;
+            margin-top: var(--spacing-sm);
+        }
+        /* Modals (Book Call, Enquire Now, Demo Preview, Message Box) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 2000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            background-color: rgba(0, 0, 0, 0.8); /* Black w/ opacity */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            backdrop-filter: blur(5px); /* Glassmorphism effect */
+            animation: fadeIn 0.3s ease;
+        }
+        .modal-content {
+            background-color: var(--bg-medium);
+            padding: var(--spacing-lg); /* Default for larger screens */
+            border-radius: var(--border-radius-lg);
+            border: 2px solid var(--border-glow);
+            box-shadow: 0 10px 40px rgba(0, 191, 255, 0.5);
+            max-width: 90%;
+            width: 500px;
+            position: relative;
+            animation: slideInFromTop 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .close-button {
+            color: var(--text-medium);
+            font-size: 2em;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            cursor: pointer;
+            transition: color var(--transition-speed) var(--transition-ease), transform var(--transition-speed) var(--transition-ease);
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: var(--error-red);
+            transform: rotate(90deg);
+        }
+        .modal-content h2 {
+            text-align: center;
+            margin-bottom: var(--spacing-md);
+            color: var(--accent-blue);
+            text-shadow: none;
+            font-size: 1.8em;
+        }
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+        .modal-content label {
+            margin-bottom: 5px;
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+        .modal-content input[type="text"],
+        .modal-content input[type="email"],
+        .modal-content input[type="tel"],
+        .modal-content input[type="time"],
+        .modal-content textarea {
+            padding: 12px;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--accent-purple);
+            background-color: rgba(30, 30, 60, 0.8);
+            color: var(--text-light);
+            font-size: 1em;
+            width: 100%;
+            transition: border-color 0.2s ease;
+        }
+        .modal-content input[type="text"]:focus,
+        .modal-content input[type="email"]:focus,
+        .modal-content input[type="tel"]:focus,
+        .modal-content input[type="time"]:focus,
+        .modal-content textarea:focus {
+            outline: none;
+            border-color: var(--border-glow);
+            box-shadow: 0 0 8px rgba(0, 191, 255, 0.5);
+        }
+        .modal-content textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .demo-modal-iframe {
+            width: 100%;
+            height: 60vh;
+            border: none;
+            border-radius: var(--border-radius-md);
+            background-color: var(--bg-dark);
+        }
+        /* Custom Message Box specifics */
+        #messageBox .modal-content {
+            text-align: center;
+            padding-bottom: var(--spacing-md);
+        }
+        #messageBoxTitle {
+            color: var(--accent-blue);
+            margin-bottom: var(--spacing-sm);
+        }
+        #messageBoxContent {
+            color: var(--text-light);
+            margin-bottom: var(--spacing-md);
+            font-size: 1.1em;
+        }
+        /* FAQ Accordion Styles */
+        .faq-section {
+            margin-top: var(--spacing-xl);
+        }
+        .accordion-item {
+            background-color: var(--bg-medium);
+            border-radius: var(--border-radius-md);
+            margin-bottom: var(--spacing-sm);
+            overflow: hidden;
+            border: 1px solid rgba(138, 43, 226, 0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md);
+            cursor: pointer;
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: background-color var(--transition-speed) var(--transition-ease);
+        }
+        .accordion-header:hover {
+            background-color: rgba(42, 42, 78, 0.4);
+        }
+        .accordion-header .icon {
+            font-size: 1.2em;
+            transition: transform var(--transition-speed) var(--transition-ease);
+        }
+        .accordion-header.active .icon {
+            transform: rotate(45deg);
+        }
+        .accordion-content {
+            padding: 0 var(--spacing-md);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height var(--transition-speed) var(--transition-ease), padding var(--transition-speed) var(--transition-ease);
+            color: var(--text-medium);
+        }
+        .accordion-content.active {
+            max-height: 200px;
+            padding-bottom: var(--spacing-md);
+        }
+        /* Footer */
+        .footer {
+            background-color: var(--bg-dark);
+            padding: var(--spacing-lg) 0;
+            border-top: 1px solid rgba(0, 191, 255, 0.1);
+            text-align: center;
+            box-shadow: inset 0 5px 20px rgba(0, 0, 0, 0.3);
+            margin-top: var(--spacing-xl);
+        }
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            text-align: left;
+        }
+        .footer-column {
+            flex: 1;
+            min-width: 220px;
+            padding: var(--spacing-sm);
+        }
+        .footer-column h3 {
+            color: var(--accent-purple);
+            font-size: 1.4em;
+            margin-bottom: var(--spacing-md);
+            text-shadow: none;
+            text-align: left;
+        }
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .footer-column ul li {
+            margin-bottom: 8px;
+            color: var(--text-medium);
+        }
+        .footer-column ul li a {
+            color: var(--text-medium);
+            transition: color 0.2s ease;
+        }
+        .footer-column ul li a:hover {
+            color: var(--accent-blue);
+        }
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+        .social-icon-card {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: var(--bg-light);
+            border: 1px solid rgba(0, 191, 255, 0.1);
+        }
+        .social-icon-card:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 20px rgba(0, 191, 255, 0.6);
+        }
+        .social-icon-card i {
+            font-size: 2em;
+            color: var(--accent-blue);
+            text-shadow: 0 0 5px rgba(0, 191, 255, 0.5);
+        }
+        .contact-details-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            font-size: 0.95em;
+        }
+        .contact-details-grid div {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-medium);
+        }
+        .contact-details-grid div i {
+            color: var(--accent-blue);
+            font-size: 1.1em;
+        }
+        .footer-bottom-text {
+            color: var(--text-medium);
+            font-size: 0.9em;
+            margin-top: var(--spacing-lg);
+            border-top: 1px dashed rgba(0, 191, 255, 0.1);
+            padding-top: var(--spacing-md);
+        }
+        .footer-bottom-text a {
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+        /* Pre-loader Styles */
+        #zenora-preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-dark);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .zenora-text-container {
+            display: flex;
+            overflow: hidden;
+        }
+        .zenora-char {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4em;
+            font-weight: 700;
+            color: var(--accent-blue);
+            text-shadow: 0 0 20px rgba(0, 191, 255, 0.8);
+            transform: translateX(-100%);
+            opacity: 0;
+            animation: slideInZenora 0.8s forwards ease-out;
+            white-space: nowrap;
+        }
+        .zenora-char:nth-child(1) { animation-delay: 0.1s; }
+        .zenora-char:nth-child(2) { animation-delay: 0.2s; }
+        .zenora-char:nth-child(3) { animation-delay: 0.3s; }
+        .zenora-char:nth-child(4) { animation-delay: 0.4s; }
+        .zenora-char:nth-child(5) { animation-delay: 0.5s; }
+        .zenora-char:nth-child(6) { animation-delay: 0.6s; }
+        @keyframes slideInZenora {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0%); opacity: 1; }
+        }
+        .zenora-preloader-fade-out {
+            animation: fadeOut 0.5s forwards ease-out 2s;
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; visibility: hidden; }
+        }
+        /* NEW: Instagram Hopping Widget */
+        #instagramWidget {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            text-decoration: none;
+            transition: transform 0.2s ease-in-out;
+            animation: hop 1.5s infinite ease-in-out; /* Hopping animation */
+        }
+        #instagramWidget i {
+            color: white;
+            font-size: 2em;
+        }
+        #instagramWidget:hover {
+            transform: translateY(-5px) scale(1.05); /* Slight lift on hover */
+            animation-play-state: paused; /* Pause hopping on hover */
+        }
+        @keyframes hop {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* NEW: Book a Call CTA Section Styling */
+        #book-call-cta-section {
+            background: linear-gradient(90deg, #8A2BE2, #00BFFF); /* Purple to Blue Gradient */
+            color: var(--text-light);
+            padding: var(--spacing-xl) var(--spacing-md);
+            text-align: center;
+            border-radius: var(--border-radius-lg);
+            margin-top: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+            box-shadow: 0 10px 30px rgba(138, 43, 226, 0.5); /* Stronger glow */
+            border: 2px solid var(--border-glow);
+            animation: pulse-glow 3s infinite ease-in-out; /* Pulsing animation */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #book-call-cta-section h2 {
+            color: white; /* White for better contrast on gradient */
+            font-size: 3.5em; /* Larger to scream */
+            margin-bottom: var(--spacing-md);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8); /* White glow */
+            letter-spacing: 2px;
+        }
+        #book-call-cta-section p {
+            color: #f0f0f0;
+            font-size: 1.4em;
+            margin-bottom: var(--spacing-lg);
+            max-width: 800px;
+        }
+        #book-call-cta-section .btn {
+            font-size: 1.5em; /* Larger button */
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-color: white;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+        }
+        #book-call-cta-section .btn:hover {
+            background: white;
+            color: var(--accent-purple);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 10px 30px rgba(138, 43, 226, 0.5); }
+            50% { box-shadow: 0 10px 40px rgba(0, 191, 255, 0.8), 0 10px 40px rgba(138, 43, 226, 0.8); }
+            100% { box-shadow: 0 10px 30px rgba(138, 43, 226, 0.5); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            /* GENERAL TYPOGRAPHY & LAYOUT */
+            h1 { font-size: 2em; }
+            h2 { font-size: 1.8em; }
+            h3 { font-size: 1.4em; }
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                padding: var(--spacing-sm);
+            }
+            .logo {
+                margin-right: 0;
+                margin-bottom: var(--spacing-sm);
+            }
+            .nav-links {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+                margin: var(--spacing-sm) 0 var(--spacing-md);
+            }
+            .cart-icon {
+                margin-top: var(--spacing-sm);
+            }
+            .hero-carousel h1 {
+                font-size: 2em;
+            }
+            .hero-carousel p {
+                font-size: 1em;
+            }
+            /* GRID LAYOUTS - ALREADY SINGLE COLUMN GLOBALLY, SO NO CHANGES NEEDED HERE FOR THEM */
+            .sidebar {
+                max-width: 100%;
+                margin-bottom: var(--spacing-md);
+            }
+            .product-listing-layout {
+                flex-direction: column;
+            }
+            .sorting-options {
+                justify-content: center;
+                text-align: center;
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+            .sorting-options select {
+                width: 100%;
+                max-width: 250px;
+            }
+            /* PDP AND PRODUCT CARDS */
+            .pdp-container {
+                flex-direction: column;
+                gap: var(--spacing-md);
+                padding: var(--spacing-md);
+            }
+            .pdp-details h1 {
+                font-size: 2em;
+            }
+            .product-card-actions {
+                flex-direction: column;
+            }
+            .product-card-content {
+                padding: var(--spacing-sm);
+            }
+            /* MODALS */
+            .modal-content {
+                padding: var(--spacing-md);
+                max-width: 95%;
+            }
+            /* FOOTER */
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-column {
+                min-width: unset;
+                width: 100%;
+                text-align: center;
+            }
+            .footer-column h3 {
+                text-align: center;
+            }
+            .contact-details-grid {
+                width: fit-content;
+                margin: 0 auto;
+            }
+            /* MARQUEE */
+ 
+            }
+            /* Client Detail Page adjustments */
+            .client-detail-container .client-detail-main-image {
+                height: 200px;
+            }
+            .client-detail-container .client-detail-main-image + p {
+                padding-top: var(--spacing-md);
+            }
+            /* NEW: Book a Call CTA Section for Mobile */
+            #book-call-cta-section {
+                padding: var(--spacing-lg) var(--spacing-sm);
+            }
+            #book-call-cta-section h2 {
+                font-size: 2.5em; /* Adjust for smaller screens */
+            }
+            #book-call-cta-section p {
+                font-size: 1.1em;
+            }
+            #book-call-cta-section .btn {
+                font-size: 1.2em;
+                padding: var(--spacing-sm) var(--spacing-md);
+            }
+        }
+        @media (max-width: 480px) {
+            /* FURTHER REDUCTION FOR VERY SMALL PHONES */
+            h1 { font-size: 1.6em; }
+            h2 { font-size: 1.4em; }
+            .section-title { font-size: 1.8em; }
+            .zenora-char { font-size: 2.5em; }
+            .btn {
+                padding: 8px 12px;
+                font-size: 0.8em;
+            }
+            .hero-carousel {
+                font-size: 0.8em;
+            }
+            .modal-content {
+                padding: var(--spacing-sm);
+            }
+            /* Product grid is already 1fr, no further change needed here */
+            .testimonial-item-marquee {
+                width: 90vw;
+                padding: 10px;
+            }
+            .pdp-details h1 {
+                font-size: 1.8em;
+            }
+            .pdp-details .price {
+                font-size: 1.8em;
+            }
+             .accordion-header {
+                font-size: 1em;
+            }
+             .accordion-content {
+                font-size: 0.9em;
+            }
+            /* NEW: Book a Call CTA Section on Very Small Screens */
+            #book-call-cta-section h2 {
+                font-size: 1.8em;
+            }
+            #book-call-cta-section p {
+                font-size: 1em;
+            }
+            #book-call-cta-section .btn {
+                font-size: 1em;
+                padding: var(--spacing-sm) var(--spacing-md);
+            }
+        }
+        /* Glassmorphism/Neumorphism inspired effects (subtle) */
+        .modal-content, .sidebar, .product-tabs, .pdp-container, .cart-items, .cart-summary, .add-on-features-section, .accordion-item {
+            background: rgba(26, 26, 46, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 191, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .category-card, .product-card, .add-on-card, .social-icon-card, .client-card {
+            background: rgba(26, 26, 46, 0.7);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(138, 43, 226, 0.15);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .category-card:hover, .product-card:hover, .add-on-card:hover, .social-icon-card:hover, .client-card:hover {
+            background: rgba(42, 42, 78, 0.8);
+            border-color: var(--border-glow);
+            box-shadow: 0 6px 20px rgba(0, 191, 255, 0.4);
+        }
+        /* Client Detail Page Specific Styles */
+        .client-detail-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+            background-color: var(--bg-medium);
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid rgba(0, 191, 255, 0.1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+        .client-detail-header h1 {
+            text-align: center;
+            margin-bottom: var(--spacing-md);
+            font-size: 2.5em;
+            color: var(--accent-blue);
+        }
+        .client-detail-image-wrapper {
+            text-align: center;
+            margin-bottom: var(--spacing-md);
+        }
+        .client-detail-content p {
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-light);
+            text-align: justify;
+        }
+        .client-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-md);
+            padding-top: var(--spacing-md);
+            border-top: 1px dashed rgba(0, 191, 255, 0.1);
+        }
+        .client-info-grid div {
+            background-color: var(--bg-light);
+            padding: var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+            border: 1px solid rgba(138, 43, 226, 0.1);
+            color: var(--text-light);
+            font-size: 0.9em;
+        }
+        .client-info-grid strong {
+            color: var(--accent-blue);
+        }
+        .stack-item {
+            display: inline-flex;
+            align-items: center;
+            margin-right: var(--spacing-sm);
+            margin-bottom: var(--spacing-xs);
+            background-color: rgba(0, 191, 255, 0.1);
+            padding: 5px 10px;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.8em;
+            color: var(--text-light);
+            border: 1px solid rgba(0, 191, 255, 0.2);
+        }
+        .stack-item i {
+            margin-right: 5px;
+            font-size: 1.2em;
+        }
+
+        /* Custom CSS for Animations and specific overrides for the new chatbot */
         .chatbot-container {
             transform-origin: bottom right;
             transition: all 0.5s ease-in-out; /* Smooth transition for size and position */
-            position: absolute; /* Position within the fixed parent div */
             bottom: 10rem; /* Adjusted for robot area height + spacing */
             right: 0; /* Aligned with the right edge of the parent container */
             z-index: 49; /* Below the robot interaction area when visible */
         }
-
-        .chatbot-container.hidden {
-            width: 7rem; /* 112px, matching w-28 on image */
-            height: 7rem; /* 112px, matching h-28 on image */
-            opacity: 0;
-            transform: scale(0);
-            pointer-events: none;
-        }
-
+      
         .chatbot-container.visible {
             /* Responsive width and height for mobile first */
             width: calc(100vw - 2rem); /* Full width minus margin on mobile */
@@ -87,11 +1713,6 @@
             animation: robot-periodic-flip 1.2s ease-out forwards; /* Flip once, not too slow */
         }
 
-        /* Ensure responsive font for Inter, if available */
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-
         /* Styling for the new introductory message widget (Hi! I'm ZEN AI...) */
         #introductory-message-widget {
             position: fixed; /* Fixed position relative to viewport */
@@ -140,10 +1761,191 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             z-index: 52; /* Above the robot image, but below the iframe */
         }
+      /* About Us Section Styling */
+#about-us-section {
+    background-color: var(--bg-dark); /* Or a similar background you use */
+    padding: var(--spacing-xxl) var(--spacing-md); /* Adjust padding as needed */
+    text-align: center;
+    overflow: hidden; /* Important for scroll animations */
+}
+
+.section-heading,
+.section-subheading {
+    margin-bottom: var(--spacing-lg);
+    color: var(--accent-blue) !important; /* Changed to your accent blue color */
+}
+
+/* Container for the widgets */
+.about-widgets-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows widgets to wrap to the next line on smaller screens */
+    gap: var(--spacing-xl); /* Spacing between widgets */
+    justify-content: center; /* Center widgets horizontally */
+    align-items: flex-start; /* Align widgets to the top */
+    max-width: 1200px; /* Max width for the container */
+    margin: 0 auto; /* Center the container itself */
+}
+
+/* Individual Widget Styling */
+.about-widget {
+    background-color: var(--bg-medium); /* A slightly lighter background for widgets */
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-deep); /* Use your existing shadow variable */
+    flex: 1 1 300px; /* Allows widgets to grow/shrink, with a base width of 300px */
+    max-width: 450px; /* Max width for a single widget */
+    text-align: left; /* Align text within widgets */
+    border: 1px solid rgba(0, 191, 255, 0.1); /* Subtle border */
+
+    /* Initial state for scroll-in animation (hidden) */
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+/* When the widget is visible (after scroll) */
+.about-widget.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    /* Start the slow hovering animation AFTER the initial fade-in */
+    animation: subtle-float 5s ease-in-out infinite;
+}
+
+.widget-heading {
+    color: var(--accent-color); /* Your accent color for headings */
+    margin-bottom: var(--spacing-md);
+    font-size: 1.6em; /* Adjust font size */
+    font-family: var(--font-orbitron); /* Or your heading font */
+    text-align: center;
+}
+
+.about-widget p {
+    color: var(--text-light);
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+/* Keyframes for the subtle hovering effect */
+@keyframes subtle-float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); } /* Adjust float height */
+    100% { transform: translateY(0px); }
+}
+
+/* Responsive Adjustments for Mobile */
+@media (max-width: 768px) {
+    .about-widgets-container {
+        flex-direction: column; /* Stack widgets vertically on small screens */
+        align-items: center; /* Center them when stacked */
+    }
+
+    .about-widget {
+        max-width: 90%; /* Take more width on smaller screens */
+        flex: 1 1 auto; /* Allow full width growth */
+    }
+}
     </style>
 </head>
 <body class="font-sans">
+    <!-- Pre-loader Screen (New Zenora specific) -->
+  
+    <div id="zenora-preloader">
+        <div class="zenora-text-container">
+            <span class="zenora-char">Z</span>
+            <span class="zenora-char">E</span>
+            <span class="zenora-char">N</span>
+            <span class="zenora-char">O</span>
+            <span class="zenora-char">R</span>
+            <span class="zenora-char">A</span>
+        </div>
+    </div>
+    <!-- Background Canvas for Particles -->
+    <canvas id="backgroundCanvas"></canvas>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container header-content">
+            <a href="#" class="logo" onclick="navigateTo('home'); return false;">ZENORA</a>
+            <nav class="nav-links">
+                <a href="#" onclick="navigateTo('home'); return false;">Home</a>
+                <a href="#" onclick="navigateTo('all-products'); return false;">Products</a>
+                <a href="#about-us-section">About Us</a>
+                <a href="#contact-us-section">Contact</a>
+            </nav>
+            <div class="cart-icon" onclick="navigateTo('cart'); return false;">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cart-item-count" class="cart-item-count">0</span>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content Area -->
+    <main id="main-content">
+        <!-- Content will be dynamically loaded here by JavaScript -->
+    </main>
+    <!-- Modals (Book Call, Enquire Now, Demo Preview, Message Box) -->
+    <div id="bookCallModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('bookCallModal')">×</span>
+            <h2>Book a Consultation Call</h2>
+            <form id="bookCallForm">
+                <label for="callName">Your Name:</label>
+                <input type="text" id="callName" required>
+                <label for="callEmail">Your Email:</label>
+                <input type="email" id="callEmail" required>
+                <label for="callPhone">Phone (Optional):</label>
+                <input type="tel" id="callPhone">
+                <label for="callTopic">Topic of Discussion:</label>
+                <input type="text" id="callTopic" placeholder="e.g., Website Development, Digital Portal">
+                <label for="callDate">Preferred Date:</label>
+                <input type="date" id="callDate" required>
+                <label for="callTime">Preferred Time:</label>
+                <input type="time" id="callTime" required>
+                <label for="callMessage">Your Message/Requirements:</label>
+                <textarea id="callMessage" rows="4"></textarea>
+                <button type="submit" class="btn btn-primary">Submit Request</button>
+            </form>
+        </div>
+    </div>
+    <div id="enquireNowModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('enquireNowModal')">×</span>
+            <h2>Enquire About This Service</h2>
+            <form id="enquireNowForm">
+                <label for="enquireName">Name:</label>
+                <input type="text" id="enquireName" required>
+                <label for="enquireEmail">Email:</label>
+                <input type="email" id="enquireEmail" required>
+                <label for="enquirePhone">Phone:</label>
+                <input type="tel" id="enquirePhone">
+                <label for="enquireProduct">Product Interested In:</label>
+                <input type="text" id="enquireProduct" readonly>
+                <label for="enquireMessage">Your Message/Questions:</label>
+                <textarea id="enquireMessage" rows="4"></textarea>
+                <button type="submit" class="btn btn-primary">Send Enquiry</button>
+            </form>
+        </div>
+    </div>
+    <div id="demoPreviewModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('demoPreviewModal')">×</span>
+            <h2>Live Demo Preview</h2>
+            <iframe id="demoPreviewIframe" class="demo-modal-iframe" src="" allowfullscreen></iframe>
+        </div>
+    </div>
+    <!-- Custom Alert/Message Box -->
+    <div id="messageBox" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('messageBox')">×</span>
+            <h2 id="messageBoxTitle"></h2>
+            <p id="messageBoxContent"></p>
+            <button class="btn btn-primary mt-md" onclick="closeModal('messageBox')">OK</button>
+        </div>
+    </div>
+    <!-- NEW: Instagram Hopping Widget -->
+    <a href="https://ig.me/m/zenora.ai?text=Hi%20%F0%9F%91%8B%20Welcome%20to%20Zenora!%20%20We%20build%20premium%20digital%20solutions%20tailored%20just%20for%20you%20%F0%9F%9A%80%20At%20Zenora%2C%20you%20can%20get%3A%20%20%F0%9F%8C%90%20Custom%20Websites%20%E2%80%93%20for%20businesses%2C%20students%2C%20creators%20%26%20professionals%20%F0%9F%92%B3%20Smart%20Digital%20Business%20Cards%20%E2%80%93%20with%20motion%20effects%20%26%20live%20links%20%F0%9F%93%B1%20AI%20Tools%20%E2%80%93%20chatbots%2C%20recommendation%20systems%20%26%20productivity%20apps%20%F0%9F%93%98%20Portfolios%20%E2%80%93%20standout%20designs%20for%20college%2C%20job%20seekers%20%26%20freelancers%20%F0%9F%8F%A2%20Client%20Portals%20%E2%80%93%20for%20doctors%2C%20lawyers%2C%20CAs%20%26%20local%20brands%20%F0%9F%92%BC%20Landing%20Pages%20%E2%80%93%20marketing-ready%20pages%20to%20boost%20your%20sales%20%F0%9F%9B%8D%EF%B8%8F%20E-com%20Ready%20Solutions%20%E2%80%93%20for%20selling%20your%20digital%20or%20physical%20products%20%F0%9F%93%8A%20Interactive%20Dashboards%20%E2%80%93%20health%20tools%2C%20calculators%2C%20planners%20%26%20more%20%F0%9F%8E%A8%20Everything%20is%20responsive%2C%20mobile-optimized%20%26%20super%20fast!%20%20Browse%20here%20%F0%9F%91%89%20https%3A%2F%2Fzenora-ai.vercel.app%2F%20Let%20us%20know%20your%20need%20%26%20budget%20%E2%80%93%20we%E2%80%99ll%20send%20options%20with%20fast%20delivery!%20%E2%9A%A1%20%E2%80%94%20Team%20Zenora" target="_blank" id="instagramWidget">
+        <i class="fab fa-instagram"></i>
+    </a>
 
+    <!-- NEW CHATBOT CODE START -->
     <div class="fixed bottom-4 right-4 z-50">
         <!-- Chatbot Container -->
         <div id="chatbot-iframe-container"
@@ -169,10 +1971,10 @@
         <!-- Robot Interaction Area (contains image and ZEN AI text) -->
         <button id="robot-interaction-area"
                 class="absolute bottom-0 right-0 p-0 bg-transparent border-none cursor-pointer
-                       flex flex-col items-center justify-end
-                       transition-all duration-300 ease-in-out
-                       hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300
-                       w-28 h-auto pb-8" /* w-28 for image, h-auto and pb-8 for text below it */
+                        flex flex-col items-center justify-end
+                        transition-all duration-300 ease-in-out
+                        hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300
+                        w-28 h-auto pb-8" /* w-28 for image, h-auto and pb-8 for text below it */
                 style="z-index: 51;"
                 aria-label="Open ZEN AI chatbot">
             <!-- Robot Image Icon (this is where animations will apply) -->
@@ -198,8 +2000,1608 @@
              onerror="this.onerror=null;this.src='https://placehold.co/24x24/gray/white?text=AI'"> <!-- Fallback image -->
         <span>Hi! I'm ZEN AI. I can help you to choose...🪄💯</span>
     </div>
+    <!-- NEW CHATBOT CODE END -->
 
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-column animate-on-scroll">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#" onclick="navigateTo('home'); return false;">Home</a></li>
+                    <li><a href="#" onclick="navigateTo('all-products'); return false;">Products</a></li>
+                    <li><a href="#about-us-section">About Us</a></li>
+                    <li><a href="#contact-us-section">Contact</a></li>
+                    <li><a href="https://cal.com/rajith-raaj/15min" target="_blank">Book a Call</a></li>
+                </ul>
+            </div>
+            <div class="footer-column animate-on-scroll">
+                <h3>Our Services</h3>
+                <ul>
+                    <li><a href="#" onclick="navigateTo('product-listing', null, 'Website Development'); return false;">Website Development</a></li>
+                    <li><a href="#" onclick="navigateTo('product-listing', null, 'Portal'); return false;">Digital Portals</a></li>
+                    <li><a href="#" onclick="navigateTo('product-listing', null, 'Digital & Smart Business Cards'); return false;">Digital Business Cards</a></li>
+                    <li><a href="#" onclick="navigateTo('product-listing', null, 'Health'); return false;">Health & Fitness Solutions</a></li>
+                </ul>
+            </div>
+            <div class="footer-column animate-on-scroll" id="contact-us-section">
+                <h3>Contact Info</h3>
+                <div class="contact-details-grid">
+                    <div><i class="fas fa-phone-alt"></i> +91 9840633766</div>
+                    <div><i class="fas fa-mobile-alt"></i> +91 9840633766</div>
+                    <div><i class="fas fa-envelope"></i> rajithraaj.r@gmail.com</div>
+                    <div><i class="fas fa-globe"></i> <a href="https://zenora-ai.vercel.app/" target="_blank">zenora-ai.vercel.app</a></div>
+                    <div><i class="fas fa-map-marker-alt"></i> Chennai, Tamil Nadu, India</div>
+                </div>
+            </div>
+            <div class="footer-column animate-on-scroll">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/rajith.raaj.507" target="_blank" class="social-icon-card"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/rajith_247?igsh=MWdpcWRma3N2bGE4MA==" target="_blank" class="social-icon-card"><i class="fab fa-instagram"></i></a>
+                    <a href="https://in.linkedin.com/in/rajith-raaj-09253933b" target="_blank" class="social-icon-card"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom-text">
+            &copy; 2025 Zenora. All rights reserved. <a href="https://zenora-ai.vercel.app/" onclick="navigateTo('home'); return false;">Powered by ZENORA</a>
+        </div>
+    </footer>
     <script>
+        // --- Global Variables and Initial Setup ---
+        const mainContent = document.getElementById('main-content');
+        const cartItemCount = document.getElementById('cart-item-count');
+        // Initialize cart from localStorage, or as an empty array if not found
+        let cart = JSON.parse(localStorage.getItem('zenoraCart')) || [];
+        // --- Product Data (Simulated Database) ---
+        // This array holds all the product information, extended with detailed descriptions and features.
+        const products = [
+            // 1) Website Development
+            {
+                id: 'website-lite',
+                category: 'Website Development',
+                subCategory: 'Website Development',
+                title: 'Website Lite',
+                description: 'A perfect starting point for individuals and small businesses. Get a sleek, responsive 3-5 page website designed to establish your online presence swiftly and affordably. Ideal for portfolios, small brochures, or personal blogs.',
+                shortDescription: 'Affordable 3-5 page responsive website.',
+                image: 'https://i.ibb.co/F4TT68ZR/36.png',
+                price: 5499,
+                type: 'add-to-cart',
+                keyDifferentiators: ['Responsive Design (Mobile-Friendly)', '3-5 Page Standard Structure', 'Basic SEO Optimization', 'Contact Form Integration', '1 Round of Revisions'],
+                ctaText: 'Add to Cart',
+                demoLink: 'https://example.com/zenora/demo/website-lite',
+                reviews: [
+                    { rating: 4, author: 'Startup Owner', text: 'Great value for money, got my business online quickly.' },
+                    { rating: 3, author: 'Blogger B.', text: 'Good for a basic blog, but limited customization.' }
+                ]
+            },
+            {
+                id: 'website-standard',
+                category: 'Website Development',
+                subCategory: 'Website Development',
+                title: 'Website Plus',
+                description: 'Elevate your online presence with a comprehensive 5-8 page website. Features include advanced design, content management system integration (CMS), and enhanced SEO. Perfect for growing businesses needing more functionality.',
+                shortDescription: '5-8 page website with CMS and SEO.',
+                image: 'https://i.ibb.co/twmbg7jB/18.png',
+                price: 8999,
+                type: 'add-to-cart',
+                keyDifferentiators: ['CMS Integration (e.g., WordPress)', '5-8 Custom Designed Pages', 'Advanced SEO Setup', 'Social Media Integration', 'Basic Analytics Setup', '2 Rounds of Revisions'],
+                ctaText: 'Add to Cart',
+                demoLink: 'https://example.com/zenora/demo/website-standard',
+                reviews: [
+                    { rating: 5, author: 'Small Business', text: 'Professional design and easy to update content.' },
+                    { rating: 4, author: 'Marketing Lead', text: 'Improved our search ranking significantly.' }
+                ]
+            },
+            {
+                id: 'website-premium',
+                category: 'Website Development',
+                subCategory: 'Website Development',
+                title: 'Website Premium',
+                description: 'A sophisticated, semi-custom website. We personalize core sections like About Us, Services, and founder details with your content and branding, delivering a professional online presence quickly. Limited customization.',
+                shortDescription: 'Semi-custom website with personalized core sections and content.',
+                image: 'https://i.ibb.co/S4qsbRzs/19.png',
+                price: 12000,
+                type: 'add-to-cart', /* Changed to add-to-cart */
+                keyDifferentiators: ['Pre-defined Structure with Core Content Customization', 'About Company, My Services, About Founder, Location, Logo, Founder Image integration', 'No YouTube Integration (unless purchased as add-on)', 'Quick Deployment for Professional Presence'],
+                ctaText: 'Add to Cart', /* Changed to Add to Cart */
+                demoLink: 'https://example.com/zenora/demo/website-premium',
+                reviews: [
+                    { rating: 5, author: 'E-commerce Brand', text: 'Our sales have soared since launching this website. Fantastic!' },
+                    { rating: 5, author: 'Client Manager', text: 'The CRM integration streamlined our operations perfectly.' }
+                ]
+            },
+            {
+                id: 'website-pro-max',
+                category: 'Website Development',
+                subCategory: 'Website Development',
+                title: 'Website Elite',
+                description: 'Our flagship custom-built website solution. Experience limitless design possibilities, bespoke functionality, and all advanced integrations including YouTube video. Your brand, truly unique.',
+                shortDescription: 'Full custom, scalable enterprise website solution with all integrations.',
+                image: 'https://i.ibb.co/Kx06Vmd2/37.png',
+                price: 16000, /* Price updated to 16000 */
+                type: 'add-to-cart', /* Changed to add-to-cart */
+                keyDifferentiators: ['Full Custom Development: 100% unique design and code.', 'Scalable Architecture', 'API Integrations', 'Dedicated Project Team', 'Ongoing Maintenance & Support', 'Advanced Performance Optimization', 'YouTube Integration (included)'],
+                ctaText: 'Add to Cart', /* Changed to Add to Cart */
+                demoLink: null,
+                reviews: [
+                    { rating: 5, author: 'Enterprise Solutions Inc.', text: 'Zenora delivered a complex platform flawlessly. Exceptional service!' },
+                    { rating: 5, author: 'CTO of Global Corp', text: 'The scalability and performance are unmatched. Highly impressed.' }
+                ]
+            },
+            // 2) Portal
+            {
+                id: 'portal-lite',
+                category: 'Portal',
+                subCategory: 'Portal',
+                title: 'Portal Lite',
+                description: 'Your essential digital footprint. A basic, cost-effective web page for quick sharing of contact and key information. Get online, effortlessly.',
+                shortDescription: 'Basic online profile for contact & one link.',
+                image: 'https://i.ibb.co/8T0TgzC/38.png',
+                price: 929,
+                type: 'add-to-cart',
+                keyDifferentiators: ['Single Page Profile', 'Core Contact Information Display', 'One External Link', 'Basic Theme Selection', 'Cost-Effective Solution', 'Limited Customization Options'],
+                ctaText: 'Add to Cart',
+                demoLink: 'https://example.com/zenora/demo/portal-lite',
+                reviews: [
+                    { rating: 4, author: 'Student X', text: 'Simple and affordable to share my details quickly.' }
+                ]
+            },
+            {
+                id: 'portal-plus',
+                category: 'Portal',
+                subCategory: 'Portal',
+                title: 'Portal Plus',
+                description: 'Elevate your digital presence. Our standard portal offers enhanced features for a professional and engaging online profile. More than just a card, it\'s your digital hub.',
+                shortDescription: 'Detailed professional profile with multiple sections.',
+                image: 'https://i.ibb.co/wr7QBW2t/39.png',
+                price: 999,
+                type: 'add-to-cart',
+                keyDifferentiators: ['Multi-Section Professional Profile', 'Portfolio Showcase', 'Social Media Links', 'Customizable Themes', 'Basic Analytics', 'Enhanced UI/UX'],
+                ctaText: 'Add to Cart',
+                demoLink: 'https://example.com/zenora/demo/portal-plus',
+                reviews: [
+                    { rating: 5, author: 'Artist A.', text: 'Perfect for showcasing my entire portfolio. Very professional.' },
+                    { rating: 4, author: 'Consultant C.', text: 'Easy to update and looks great on all devices.' }
+                ]
+            },
+            {
+                id: 'portal-pro-max',
+                category: 'Portal',
+                subCategory: 'Portal',
+                title: 'Premium Portal ',
+                description: 'The ultimate digital showcase. Portal Pro Max integrates seamlessly with your custom Zenora website, offering unparalleled features, advanced analytics, and complete brand control.',
+                shortDescription: 'Advanced portal with analytics and lead gen.',
+                image: 'https://i.ibb.co/HDX67HkL/40.png',
+                price: 2999,
+                type: 'add-to-cart',
+                keyDifferentiators: ['Advanced Analytics Dashboard: Track views, clicks, engagement.', 'Integrated Lead Generation Forms', 'Direct Messaging Integration', 'Priority Support', 'Full Customization Options', 'Website Integration (Limited or Custom)'],
+                ctaText: 'Add to Cart',
+                demoLink: 'https://example.com/zenora/demo/portal-promax',
+                reviews: [
+                    { rating: 5, author: 'Influencer I.', text: 'The analytics are a game-changer for understanding my audience.' },
+                    { rating: 5, author: 'Business Owner', text: 'Generated significant leads through the integrated forms. Worth every penny!' }
+                ]
+            },
+            {
+                id: 'businessman-portal',
+                category: 'Portal',
+                subCategory: 'Portal',
+                title: 'Elite Business Portal',
+                description: 'For the dynamic entrepreneur. Showcase your ventures, network, and professional brand with a sophisticated digital presence that adapts to every opportunity.',
+                shortDescription: 'Professional profile for businessmen with networking features.',
+                image: 'https://i.ibb.co/SXd6wmTz/41.png',
+                price: 3599,
+                type: 'add-to-cart',
+                keyDifferentiators: ['Enhanced features for business networking', 'Integration with professional platforms', 'Company image, name, logo', '"Share My Card" button (links to URL widget)', 'Contact info, social links, business overview, services section'],
+                ctaText: 'Add to Cart',
+                demoLink: 'https://example.com/zenora/demo/biz-portal',
+                reviews: [{ rating: 4, author: 'Entrepreneur E.', text: 'Helped me connect with more clients effectively.' }]
+            },
+            {
+                id: 'working-professional-portfolio-portal',
+                category: 'Portal',
+                subCategory: 'Portal',
+                title: "Elite Manager's Portal",
+                description: 'Your comprehensive digital resume. Highlight your skills, experience, and projects in a visually stunning and easily shareable format that makes a lasting impression.',
+                shortDescription: 'Online portfolio for working professionals.',
+                image: 'https://i.ibb.co/gLHT8vtW/35.png',
+                price: 3599,
+                type: 'add-to-cart',
+                keyDifferentiators: ['Professional headshot and resume sections', 'Project showcases with images/videos', 'Testimonials section', 'LinkedIn integration', 'Downloadable PDF resume option'],
+                ctaText: 'Add to Cart',
+                demoLink: 'https://example.com/zenora/demo/prof-portfolio',
+                reviews: [{ rating: 5, author: 'Designer D.', text: 'My portfolio looks fantastic and is easy to share.' }]
+            },
+            {
+                id: 'college-student-portal',
+                category: 'Portal',
+                subCategory: 'Portal',
+                title: 'Elite Student Portal',
+                description: 'Your academic and professional launchpad. Create a vibrant digital portfolio showcasing your projects, achievements, and unique skills. Even sell your valuable notes to peers!',
+                shortDescription: 'Student portal with academic showcase and "Sell My Notes" feature.',
+                image: 'https://i.ibb.co/7tq6qhpW/29.png',
+                price: 3899,
+                type: 'add-to-cart',
+                keyDifferentiators: ['Academic projects showcase area', 'Skill endorsements section', 'Extra-curricular activities section', 'Integrated "Sell My Notes" functionality for peers', 'Social academic links'],
+                ctaText: 'Add to Cart',
+                demoLink: 'https://example.com/zenora/demo/student-portal',
+                reviews: [{ rating: 4, author: 'Student S.', text: 'The sell notes feature is unique and very helpful.' }]
+            },
+            {
+                id: 'med-students-portal',
+                category: 'Portal',
+                subCategory: 'Portal',
+                title: 'Elite Med-Student Portal',
+                description: 'The specialized platform for aspiring medical professionals. Document your clinical rotations, research, and certifications in a structured, accessible format for your career journey.',
+                shortDescription: 'Academic and research profile for med students.',
+                image: 'https://i.ibb.co/0j8ccbz3/31.png',
+                price: 3599,
+                type: 'add-to-cart',
+                keyDifferentiators: ['Clinical experience logs', 'Research papers and publications section', 'Certifications and licenses display', 'Volunteer work and relevant academic achievements'],
+                ctaText: 'Add to Cart',
+                demoLink: 'https://example.com/zenora/demo/med-student',
+                reviews: [{ rating: 5, author: 'Med Student M.', text: 'Essential for medical research and networking.' }]
+            },
+            {
+                id: 'lawyers-advocates-portal',
+                category: 'Portal',
+                subCategory: 'Portal',
+                title: 'Elite Lawyer/Advocate Portal',
+                description: 'A comprehensive online presence for legal professionals, highlighting specializations and case histories.',
+                shortDescription: 'Online presence for legal professionals.',
+                image: 'https://i.ibb.co/DPwxwHKh/Website-Lite-1.png',
+                price: 3599,
+                type: 'add-to-cart',
+                keyDifferentiators: ['Practice areas section', 'Case victory highlights (anonymized for privacy)', 'Publications and articles display', 'Bar associations and professional affiliations', 'Direct contact for consultations'],
+                ctaText: 'Add to Cart',
+                demoLink: 'https://example.com/zenora/demo/lawyer-portal',
+                reviews: [{ rating: 4, author: 'Advocate A.', text: 'Helped in professional outreach and client trust.' }]
+            },
+            {
+                id: 'doctors-web-portal',
+                category: 'Portal',
+                subCategory: 'Portal',
+                title: 'Doctor Portal',
+                description: 'Empowering doctors with a professional web presence, including appointment scheduling integration and patient management features.',
+                shortDescription: 'Web portal for doctors with appointment and patient management.',
+                image: 'https://i.ibb.co/pBSzYNBQ/30.png',
+                price: 3899,
+                type: 'add-to-cart',
+                keyDifferentiators: ['Doctor profile and specializations', 'Clinic information and opening hours', 'Cal.com integration for appointment booking', 'Patient review section', 'Patient education resources'],
+                ctaText: 'Add to Cart',
+                demoLink: 'https://example.com/zenora/demo/doctor-portal',
+                reviews: [{ rating: 5, author: 'Dr. Z.', text: 'The appointment booking integration is seamless and efficient.' }]
+            },
+            {
+                id: 'dog-tag-qr-portal',
+                category: 'Portal',
+                subCategory: 'Portal',
+                title: 'Dog Tag Portal',
+                description: 'Ensure your beloved pet\'s safety. A scannable QR on their tag links to vital contact information, medical history, and special instructions, ensuring a swift reunion if they ever wander.',
+                shortDescription: 'QR portal for pet dog tags with vital info.',
+                image: 'https://i.ibb.co/Fk1j9MX7/Website-Lite-3.png',
+                price: 1999,
+                type: 'add-to-cart',
+                keyDifferentiators: ['Pet photo and name', 'Owner contact details', 'Emergency contact information', 'Vet information and medical history (optional)', 'Known allergies/conditions display'],
+                ctaText: 'Add to Cart',
+                demoLink: 'https://example.com/zenora/demo/dogtag-qr',
+                reviews: [{ rating: 5, author: 'Pet Lover P.', text: 'Peace of mind knowing my dog\'s info is accessible.' }]
+            },
+            {
+                id: 'car-bike-accident-wrong-parking-portal',
+                category: 'Portal',
+                subCategory: 'Portal',
+                title: 'Life Guardian Portal',
+                description: 'Your digital assistant for on-road incidents. A stick-on QR provides immediate contact in emergencies, wrong parking, or when assistance is needed, streamlining communication and resolution.',
+                shortDescription: 'QR portal for vehicle emergencies.',
+                image: 'https://i.ibb.co/gL19xSwK/Website-Lite-2.png',
+                price: 1999,
+                type: 'add-to-cart',
+                keyDifferentiators: ['Owner contact information', 'Emergency contact (e.g., family member)', 'Vehicle details (make, model, license plate)', '"Call for Assistance" button', 'Potential for incident reporting guidance'],
+                ctaText: 'Add to Cart',
+                demoLink: 'https://example.com/zenora/demo/vehicle-qr',
+                reviews: [{ rating: 4, author: 'Driver D.', text: 'A clever solution for vehicle emergencies.' }]
+            },
+            {
+                id: 'kids-safety-portal',
+                category: 'Portal',
+                subCategory: 'Portal',
+                title: 'Kids Safety Portal',
+                description: 'Safety first: A QR code for kids\' ID cards with emergency contacts and critical health information. Provides peace of mind for parents and quick action in emergencies.',
+                shortDescription: 'Safety QR for kids ID cards.',
+                image: 'https://i.ibb.co/d0ZLqHdf/Website-Lite-4.png',
+                price: 1999,
+                type: 'add-to-cart',
+                keyDifferentiators: ['Parent/Guardian contact details', 'Emergency contacts', 'Known medical conditions (allergies, chronic illnesses)', 'Emergency instructions for caregivers (securely displayed)', 'Secure and privacy-focused data access'],
+                ctaText: 'Add to Cart',
+                demoLink: 'https://example.com/zenora/demo/kids-qr',
+                reviews: [{ rating: 5, author: 'Parent P.', text: 'Invaluable for child safety. Highly recommend!' }]
+            },
+            {
+                id: 'luggage-safety-portal',
+                category: 'Portal',
+                subCategory: 'Portal',
+                title: 'Luggage Safety Portal',
+                description: 'Never lose your luggage again with our QR code tracking portal. A scannable QR on your luggage tag connects to your contact details, making lost baggage recovery simple and stress-free.',
+                shortDescription: 'QR portal for luggage tracking.',
+                image: 'https://i.ibb.co/XZzmgf9Q/Website-Lite-6.png',
+                price: 1799,
+                type: 'add-to-cart',
+                keyDifferentiators: ['Owner contact information', 'Optional travel itinerary details', 'Reward for return offer', 'Customizable return instructions'],
+                ctaText: 'Add to Cart',
+                demoLink: 'https://example.com/zenora/demo/luggage-qr',
+                reviews: [{ rating: 4, author: 'Traveler T.', text: 'Smart way to ensure luggage returns.' }]
+            },
+            {
+                id: 'real-estate-portal',
+                category: 'Portal',
+                subCategory: 'Portal',
+                title: 'Real-estate Portal',
+                description: 'Showcase your properties like never before. A dynamic portal for real estate professionals to feature listings, virtual tours, client testimonials, and agent profiles with ease.',
+                shortDescription: 'QR portal for real estate portfolios.',
+                image: 'https://i.ibb.co/xKTDP5Nd/Website-Lite-7.png',
+                price: 3899,
+                type: 'add-to-cart',
+                keyDifferentiators: ['Dynamic property listings with images/videos', 'Agent profile and contact information', 'Integration of virtual tour links', 'Client testimonials and success stories'],
+                ctaText: 'Add to Cart',
+                demoLink: 'https://example.com/zenora/demo/realestate-qr',
+                reviews: [{ rating: 5, author: 'Realtor R.', text: 'Helped me showcase properties effectively on the go.' }]
+            },
+            {
+                id: 'safety-older-people-portal',
+                category: 'Portal',
+                subCategory: 'Portal',
+                title: 'Safety for Older People Portal',
+                description: 'A lifeline for vulnerable individuals. A discreet, scannable QR on their smartwatch provides instant access to crucial medical history, emergency contacts, and care instructions for those with memory impairment, aiding safe returns.',
+                shortDescription: 'Safety QR for older people with memory loss.',
+                image: 'https://i.ibb.co/Mkswrh0Y/Website-Lite-8.png',
+                price: 3899,
+                type: 'add-to-cart',
+                keyDifferentiators: ['Emergency contacts (multiple)', 'Primary caregiver information', 'Known medical conditions and medications', 'Communication tips for interactors', 'Lost & Found instructions', 'Highly secure and privacy-focused data access'],
+                ctaText: 'Add to Cart',
+                demoLink: 'https://example.com/zenora/demo/elderly-safety-qr',
+                reviews: [{ rating: 5, author: 'Caregiver C.', text: 'An essential tool for managing care for loved ones.' }]
+            },
+            // 3) Digital and smart business card
+            {
+                id: 'digital-business-card-silver',
+                category: 'Digital & Smart Business Cards',
+                subCategory: 'Digital & Smart Business Cards',
+                title: 'Classic Business Card',
+                description: 'Go paperless with style. Your modern, digital business card for instant sharing of contact details, social links, and portfolio previews directly from your phone.',
+                shortDescription: 'Modern, paperless digital business card for instant sharing.',
+                image: 'https://i.ibb.co/ks0kM6pR/52.png',
+                price: 999,
+                type: 'add-to-cart',
+                keyDifferentiators: [
+                    'Minimalist, shareable digital profile.',
+                    'Contact info, social links, photo, company logo, short bio.',
+                    'One-time purchase, instant activation.',
+                    'Direct shareable link'
+                ],
+                ctaText: 'Add to Cart',
+                demoLink: 'https://example.com/zenora/demo/digital-card',
+                reviews: [
+                    { rating: 4, author: 'Networking Pro', text: 'Sleek design, very easy to share my details.' },
+                    { rating: 4, author: 'Sales Rep S.', text: 'Convenient for quick sharing during meetings.' }
+                ]
+            },
+            {
+                id: 'premium-business-card-printable',
+                category: 'Digital & Smart Business Cards',
+                subCategory: 'Digital & Smart Business Cards',
+                title: 'Premium Business Card',
+                description: 'Make a tangible impression. High-quality, custom-designed printable business cards that reflect your brand\'s professionalism and attention to detail. Note: Printing services not included.',
+                shortDescription: 'Custom-designed, high-quality printable business card file.',
+                image: 'https://i.ibb.co/5gTZthM3/53.png',
+                price: 2499,
+                type: 'add-to-cart',
+                keyDifferentiators: [
+                    'Custom Print-Ready Design File (delivered digitally).',
+                    'Includes QR code design for any Zenora Portal.',
+                    'High-resolution graphics.',
+                    'Note: Printing services not included.'
+                ],
+                ctaText: 'Add to Cart',
+                demoLink: null,
+                reviews: [
+                    { rating: 5, author: 'Creative Studio', text: 'The design quality is top-notch, exactly what we needed!' }
+                ]
+            },
+            {
+                id: 'smart-business-card-with-web-portal',
+                category: 'Digital & Smart Business Cards',
+                subCategory: 'Digital & Smart Business Cards',
+                title: 'Smart Business Card with Web Portal',
+                description: 'The best of both worlds. A physical business card with an integrated QR code, seamlessly bridging your physical and digital presence for enhanced networking.',
+                shortDescription: 'Physical card with QR linking to a dedicated Zenora Portal.',
+                image: 'https://i.ibb.co/tpVbMyWB/Gemini-Generated-Image-nl02mznl02mznl02.png',
+                price: 3299,
+                type: 'add-to-cart',
+                keyDifferentiators: [
+                    'Custom physical card design (print-ready file).',
+                    'Integrated QR code design for a dedicated Zenora Portal (e.g., Portal Plus equivalent).',
+                    'Enhanced networking capabilities.'
+                ],
+                ctaText: 'Add to Cart',
+                demoLink: 'https://example.com/zenora/demo/smart-card',
+                reviews: [
+                    { rating: 5, author: 'Event Organizer', text: 'Seamlessly combines digital and physical, brilliant!' },
+                    { rating: 5, author: 'Public Speaker P.', text: 'Leaves a lasting impression at events.' }
+                ]
+            },
+            {
+                id: 'nfc-business-cards',
+                category: 'Digital & Smart Business Cards',
+                subCategory: 'Digital & Smart Business Cards',
+                title: 'NFC Business Card',
+                description: 'Instant connections with a tap. Our NFC business cards allow for effortless sharing of your digital profile and contact information by simply tapping a compatible device.',
+                shortDescription: 'NFC-enabled physical card for tap-to-share info.',
+                image: 'https://i.ibb.co/fYWMLvg3/Website-Lite-9.png',
+                price: 3999,
+                type: 'add-to-cart',
+                keyDifferentiators: [
+                    'Includes NFC-enabled physical card(s) (e.g., 1 card).',
+                    'Links to a dedicated Zenora Digital Profile (similar to Digital Business Card or basic Portal).',
+                    'Tap-to-share technology.',
+                    'Effortless information exchange.'
+                ],
+                ctaText: 'Add to Cart',
+                demoLink: 'https://example.com/zenora/demo/nfc-card',
+                reviews: [
+                    { rating: 5, author: 'Tech Enthusiast', text: 'Future of business cards, very impressive.' },
+                    { rating: 5, author: 'Innovator I.', text: 'Everyone asks where I got it from. A real conversation starter!' }
+                ]
+            },
+            // 4) Health
+            {
+                id: 'healthyfy-app',
+                category: 'Health',
+                subCategory: 'Health',
+                title: 'Healthyfy App',
+                description: 'Your personal wellness companion. Our innovative Healthyfy app (my college project!) helps you track fitness, nutrition, and well-being goals, empowering a healthier lifestyle.',
+                shortDescription: 'FREE wellness companion app to track fitness and nutrition.',
+                image: 'https://i.ibb.co/5XmRzzd3/Website-Lite-10.png',
+                price: 0,
+                type: 'free-download',
+                keyDifferentiators: [
+                    'FREE Download/Access: No purchase required.',
+                    'Wellness Tracking Features: Steps, water intake, basic food logging.',
+                    'Showcases your development skills.'
+                ],
+                ctaText: 'Explore the App',
+                demoLink: 'https://rajithraaj.github.io/-healthyfy-app/',
+                reviews: [
+                    { rating: 5, author: 'Fitness Lover', text: 'Simple and effective, can\'t believe it\'s free!' },
+                    { rating: 4, author: 'Health Seeker', text: 'Good basic tracking features. Looking forward to updates!' }
+                ]
+            }
+        ];
+        // --- Client Data (New Section) ---
+        const clients = [
+            {
+                id: 'carrywings-technologies',
+                name: 'CARRYWINGS Technologies',
+                description: 'Zenora developed a highly responsive and feature-rich website for Carrywings Technologies, streamlining their online presence and enhancing user engagement.',
+                imageUrl: 'https://i.ibb.co/nscJgp0s/58.png',
+                websiteUrl: 'https://carrywings-technologies.vercel.app/',
+                turnover: '₹50 Lakh - ₹1 Crore Annually',
+                stack: ['html', 'css', 'javascript', 'react', 'vercel']
+            },
+            {
+                id: 'rkbuilds-smart',
+                name: 'RKBuilds Smart',
+                description: 'We created an intuitive and aesthetically pleasing digital platform for RKBuilds Smart, focusing on seamless navigation and a strong brand identity to showcase their smart building solutions.',
+                imageUrl: 'https://i.ibb.co/M5pBqMzB/57.png',
+                websiteUrl: 'https://rkbuildssmart.vercel.app/',
+                turnover: '₹20 Lakh - ₹50 Lakh Annually',
+                stack: ['html', 'css', 'javascript', 'react', 'vercel', 'firebase']
+            },
+            {
+                id: 'healthyfy-app-client',
+                name: "Logistics Company based in Switzerland" ,
+                description: "I'm absolutely thrilled to announce a major milestone in my work! A client all the way from Switzerland saw my websites, loved what they saw, and has brought me on for my first global, offshore project! It's incredibly rewarding to see my efforts receive international recognition and be entrusted with such a significant responsibility. This truly reflects all the hard work I dedicated during those late-night coding sessions until dawn. This isn't just another project; it feels like a whole new chapter is opening up for my work.",
+                imageUrl: 'https://i.ibb.co/S8s3LXY/56.png',
+                websiteUrl: 'https://rajithraaj.github.io/-healthyfy-app/',
+               Project: 'Develop a high-end Website',
+                stack: ['html', 'css', 'javascript', 'github']
+            }
+        ];
+        // Testimonial Data for Marquee
+        const testimonialsData = [
+            { text: "The website helped me quickly establish a professional online profile. Highly recommended!", author: "soundhar Jasper MD-Carrywings" },
+            { text: "The NFC Business Cards are a game-changer for networking. Everyone is impressed!", author: "Rohith Kani,MD-RK Builds mart" },
+            { text: "My Clinic's Premium portal helped me to connect with my patients easily", author: "Dr. Dinesh , Leading Skin Doctor in Anna Nagar" },
+            { text: "Being a businessman means I'm always on the go. Zenora's Business Man Portal has streamlined my networking processes very easy. Now, sharing my entire business profile with a quick QR scan feels so modern and efficient. All thanks to Rajith", author: "Arun,MD-Nxt Gen interiors" },
+            { text: "I used to struggle big time with showcasing my diverse project work in one place. The Working Professionals Portfolio Portal by Zenora has been such a relief! It looks fantastic, is easy to update", author: "Vishnu, Manager-Renault & Nissan" },
+            { text: "My College Student Portal from Zenora is an absolute lifesaver! As a student, having a dedicated space to showcase my academic projects, achievements, and even sell my study notes is just brilliant. It’s helping me build my professional identity even before graduation, and I feel so much more confident about my career path", author: "Disha,Med-student" },
+            { text: "My elderly parents sometimes struggle with memory, and the Safety for Older People Portal has been a godsend for our family. Knowing that all their crucial medical information and emergency contacts are just a quick scan away on their ID card gives us all such immense relief. It's a thoughtful product that truly understands and cares about our loved ones' safety", author: "Yogeshwaran, Real-Estate Business man" },
+            { text: "I've tried so many fitness apps, but they all had hidden charges. Zenora's Healthyfy App is truly a blessing – it's absolutely free to use, unlike others, and it's been such a big help in my weight loss journey!", author: "Suresh,Manager-Vdart"}
+        ];
+        // --- Helper Functions for General UI ---
+        /**
+         * Displays a custom message box instead of native alert().
+         * @param {string} message - The message content.
+         * @param {string} title - The title of the message box.
+         */
+        function showInfoMessage(message, title = 'Notification') {
+            document.getElementById('messageBoxTitle').textContent = title;
+            document.getElementById('messageBoxContent').textContent = message;
+            openModal('messageBox');
+        }
+        /**
+         * Updates the shopping cart item count displayed in the header.
+         */
+        function updateCartCount() {
+            cartItemCount.textContent = cart.length;
+        }
+        /**
+         * Generates star rating HTML based on a numerical rating.
+         * @param {number} rating - The average rating (0-5).
+         * @returns {string} HTML string of star icons.
+         */
+        function generateStarRating(rating) {
+            const fullStars = Math.floor(rating);
+            const halfStar = rating % 1 !== 0;
+            let stars = '';
+            for (let i = 0; i < fullStars; i++) {
+                stars += '<span class="icon-star fa-solid fa-star"></span>';
+            }
+            if (halfStar) {
+                stars += '<span class="icon-star-half fa-solid fa-star-half-stroke"></span>';
+            }
+            for (let i = 0; i < (5 - fullStars - (halfStar ? 1 : 0)); i++) {
+                stars += '<span class="icon-star-empty fa-regular fa-star"></span>';
+            }
+            return stars;
+        }
+        /**
+         * Changes the main product image on the PDP when a thumbnail is clicked.
+         * @param {HTMLImageElement} thumbnail - The clicked thumbnail image element.
+         */
+        function changeMainImage(thumbnail) {
+            document.getElementById('mainProductImage').src = thumbnail.src;
+            document.querySelectorAll('.thumbnail-image').forEach(img => img.classList.remove('active'));
+            thumbnail.classList.add('active');
+        }
+        // --- Modal Logic ---
+        /**
+         * Opens a specified modal window.
+         * @param {string} modalId - The ID of the modal to open.
+         * @param {string} [productName=null] - Optional: The product name to pre-fill in an enquiry form.
+         */
+        function openModal(modalId, productName = null) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'flex';
+                if (productName && modalId === 'enquireNowModal') {
+                    document.getElementById('enquireProduct').value = productName;
+                }
+            }
+        }
+        /**
+         * Closes a specified modal window.
+         * @param {string} modalId - The ID of the modal to close.
+         */
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+                if (modalId === 'demoPreviewModal') {
+                    document.getElementById('demoPreviewIframe').src = '';
+                }
+            }
+        }
+        // --- Handle Modal Form Submissions (Client-side Simulation) ---
+        // Booking call form submission - This modal is now primarily a fallback/info, as direct link is used
+        document.getElementById('bookCallForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            showInfoMessage('Booking request submitted successfully! We will contact you shortly.', 'Booking Confirmed');
+            closeModal('bookCallModal');
+            this.reset();
+        });
+        // Enquiry form submission
+        document.getElementById('enquireNowForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            showInfoMessage('Your enquiry has been sent! We will get back to you soon.', 'Enquiry Sent');
+            closeModal('enquireNowModal');
+            this.reset();
+        });
+        /**
+         * Opens the demo preview modal with a given URL.
+         * @param {string} demoLink - The URL for the iframe content.
+         */
+        function openDemoModal(demoLink) {
+            const iframe = document.getElementById('demoPreviewIframe');
+            iframe.src = demoLink;
+            openModal('demoPreviewModal');
+        }
+        // --- Cart Logic ---
+        /**
+         * Adds a product or add-on to the shopping cart.
+         * @param {string} productId - The ID of the product/add-on.
+         * @param {boolean} [isAddon=false] - True if adding an add-on.
+         * @param {number} [addonPrice=0] - Price for the add-on (if `isAddon` is true).
+         * @param {string} [addonTitle=''] - Title for the add-on (if `isAddon` is true).
+         */
+        function addToCart(productId, isAddon = false, addonPrice = 0, addonTitle = '') {
+            let productToAdd;
+            if (isAddon) {
+                productToAdd = {
+                    id: productId,
+                    title: addonTitle,
+                    price: addonPrice,
+                    image: 'https://placehold.co/100x100/A0A0A0/ffffff?text=Add-On',
+                    isAddon: true
+                };
+            } else {
+                productToAdd = products.find(p => p.id === productId);
+            }
+            if (productToAdd) {
+                const existingItem = cart.find(item => item.id === productToAdd.id);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({ ...productToAdd, quantity: 1 });
+                }
+                try {
+                    localStorage.setItem('zenoraCart', JSON.stringify(cart));
+                    updateCartCount();
+                    showInfoMessage(`${productToAdd.title} added to cart!`, 'Item Added');
+                    updateCartDisplay();
+                } catch (e) {
+                    console.error("Failed to save cart to local storage:", e);
+                    showInfoMessage("Failed to add to cart due to storage error. Please try again later.", "Error");
+                }
+            } else {
+                console.warn(`Product or Add-on with ID ${productId} not found.`);
+                showInfoMessage("Could not add item to cart. Please try again.", "Error");
+            }
+        }
+        /**
+         * Updates the display of items in the shopping cart page and calculates totals.
+         */
+        function updateCartDisplay() {
+            const cartItemsContainer = document.getElementById('cartItemsContainer');
+            const cartSubtotalSpan = document.getElementById('cartSubtotal');
+            const cartTotalSpan = document.getElementById('cartTotal');
+            if (!cartItemsContainer || !cartSubtotalSpan || !cartTotalSpan) return;
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p class="text-center" style="color: var(--text-medium);">Your cart is empty. <a href="#" onclick="navigateTo(\'home\')" style="color: var(--accent-blue); text-decoration: underline;">Start shopping!</a></p>';
+                cartSubtotalSpan.textContent = '₹0.00';
+                cartTotalSpan.textContent = '₹0.00';
+                return;
+            }
+            let subtotal = 0;
+            cartItemsContainer.innerHTML = cart.map(item => {
+                const itemPriceValue = typeof item.price === 'number' ? item.price : 0;
+                const itemPrice = itemPriceValue * item.quantity;
+                subtotal += itemPrice;
+                return `
+                    <div class="cart-item animate-on-scroll" data-product-id="${item.id}">
+                        <img src="${item.image}" alt="${item.title}" class="cart-item-image">
+                        <div class="cart-item-details">
+                            <h3>${item.title}</h3>
+                            <p class="cart-item-price">₹${itemPriceValue.toLocaleString('en-IN')}</p>
+                        </div>
+                        <div class="cart-item-actions">
+                            <input type="number" value="${item.quantity}" min="1" onchange="updateCartQuantity('${item.id}', this.value)">
+                            <button class="btn-remove" onclick="removeFromCart('${item.id}')">Remove</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            cartSubtotalSpan.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+            cartTotalSpan.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+            initializeScrollAnimations();
+        }
+        /**
+         * Updates the quantity of a product in the cart.
+         * @param {string} productId - The ID of the product to update.
+         * @param {string} quantity - The new quantity as a string (will be parsed to int).
+         */
+        function updateCartQuantity(productId, quantity) {
+            const newQuantity = parseInt(quantity);
+            if (isNaN(newQuantity) || newQuantity < 1) {
+                showInfoMessage('Quantity must be a positive number.', 'Invalid Quantity');
+                updateCartDisplay();
+                return;
+            }
+            const itemIndex = cart.findIndex(i => i.id === productId);
+            if (itemIndex > -1) {
+                cart[itemIndex].quantity = newQuantity;
+                try {
+                    localStorage.setItem('zenoraCart', JSON.stringify(cart));
+                    updateCartDisplay();
+                    updateCartCount();
+                } catch (e) {
+                    console.error("Failed to update cart quantity in local storage:", e);
+                    showInfoMessage("Failed to update quantity due to storage error. Please try again later.", "Error");
+                }
+            }
+        }
+        /**
+         * Removes a product from the cart.
+         * @param {string} productId - The ID of the product to remove.
+         */
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            try {
+                localStorage.setItem('zenoraCart', JSON.stringify(cart));
+                updateCartDisplay();
+                updateCartCount();
+            } catch (e) {
+                console.error("Failed to remove item from cart in local storage:", e);
+                showInfoMessage("Failed to remove item due to storage error. Please try again later.", "Error");
+            }
+        }
+        /**
+         * Simulates the checkout process. Clears the cart and navigates to a dummy Tally.so link.
+         * MODIFIED: Displays a message and redirects to the enquiry form.
+         */
+        function proceedToCheckout() {
+            if (cart.length === 0) {
+                showInfoMessage('Your cart is empty! Add some items before proceeding to checkout.');
+                return;
+            }
+            showInfoMessage('Taking you to enquiry form...', 'Proceeding to Enquiry');
+            // Clear cart immediately
+            cart = [];
+            try {
+                localStorage.removeItem('zenoraCart');
+            } catch (e) {
+                console.error("Failed to clear cart from local storage:", e);
+            }
+            updateCartCount();
+            updateCartDisplay();
+
+            // Redirect after a short delay to allow message to be seen
+            setTimeout(() => {
+                window.location.href = 'https://tally.so/r/3jXaM1'; // Updated Tally.so link
+            }, 2000); // 2 seconds delay
+        }
+        // --- Core Navigation and Content Loading ---
+        /**
+         * Navigates to a different page/section by dynamically rendering content.
+         * Clears existing content and scrolls to top.
+         * @param {string} pageId - Identifier for the page to navigate to ('home', 'all-products', 'product-detail', 'product-listing', 'cart', 'client-detail').
+         * @param {string} [dataId=null] - Optional: Product ID for 'product-detail' or client ID for 'client-detail'.
+         * @param {string} [category=null] - Optional: Category name for 'product-listing' page.
+         */
+        function navigateTo(pageId, dataId = null, category = null) {
+            mainContent.innerHTML = '';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            switch (pageId) {
+                case 'home':
+                    renderHomePage();
+                    break;
+                case 'all-products':
+                    renderAllProductsPage();
+                    break;
+                case 'product-detail':
+                    if (dataId) renderProductDetailPage(dataId);
+                    else showInfoMessage('Something went wrong. Product ID is missing.', 'Error');
+                    break;
+                case 'product-listing':
+                    if (category) renderProductListingPage(category);
+                    else showInfoMessage('Something went wrong. Category is missing.', 'Error');
+                    break;
+                case 'cart':
+                    renderCartPage();
+                    break;
+                case 'client-detail':
+                    if (dataId) renderClientDetailPage(dataId);
+                    else showInfoMessage('Something went wrong. Client ID is missing.', 'Error');
+                    break;
+                default:
+                    renderHomePage();
+            }
+        }
+        /**
+         * Renders the main homepage content.
+         */
+        function renderHomePage() {
+            let homepageContent = `
+                <section class="hero-section animate-on-scroll">
+                    <div class="hero-carousel" id="heroCarousel">
+<div class="carousel-item item-1" style="background-image: url('https://i.ibb.co/Ngd7rrNq/1.png'); background-size: cover; background-position: center; color: white; text-align: center; padding: 20px;">
+                            <h1> Elevate Your Digital Presence</h1>
+                            <button class="btn btn-primary" onclick="navigateTo('all-products')">Discover All Products</button>
+                        </div>
+                      <div class="carousel-item item-2" style="background-image: url('https://i.ibb.co/QFBhxLXG/34.png'); background-size: cover; background-position: center; color: white; text-align: center; padding: 20px;">
+  <h1>Build Your Digital Future with us</h1>
+  <button class="btn btn-primary" onclick="navigateTo('all-products')" style="background-color: blue; color: white; border: none; padding: 10px 20px; cursor: pointer;">Explore All Products</button>
+</div>
+   <div class="carousel-item item-3" style="background-image: url('https://i.ibb.co/5x9gkv2c/Website-Lite.png'); background-size: cover; background-position: center; color: white; text-align: center; padding: 20px;">
+                            <h1>Your Business. Evolved Online</h1>
+                            <button class="btn btn-primary" onclick="navigateTo('all-products')">View All Products</button>
+                        </div>
+                    </div>
+                    <div class="carousel-dots" id="carouselDots">
+                        <div class="dot active" data-index="0"></div>
+                        <div class="dot" data-index="1"></div>
+                        <div class="dot" data-index="2"></div>
+                    </div>
+                </section>
+                <!-- NEW: Book a Call CTA Section (Stands out) -->
+                <section class="container animate-on-scroll" id="book-call-cta-section">
+                    <h2>Book a Personalized Consultation</h2>
+                    <p>Discuss your unique digital needs with our experts and get tailored solutions designed just for you.</p>
+                    <a href="https://cal.com/rajith-raaj/15min" target="_blank" class="btn">Schedule Your Call Now!</a>
+                </section>
+                <!-- END NEW: Book a Call CTA Section -->
+                <section class="container mb-lg animate-on-scroll" id="our-services-section">
+                    <h2 class="section-title">Our Services</h2>
+            `;
+            const orderedCategories = [
+                'Website Development',
+                'Portal',
+                'Digital & Smart Business Cards',
+                'Health'
+            ];
+            const productOrderMap = {
+                'website-lite': 1, 'website-standard': 2, 'website-premium': 3, 'website-pro-max': 4,
+                'portal-lite': 1, 'portal-plus': 2, 'portal-pro-max': 3, 'businessman-portal': 4,
+                'working-professional-portfolio-portal': 5, 'college-student-portal': 6,
+                'med-students-portal': 7, 'lawyers-advocates-portal': 8, 'doctors-web-portal': 9,
+                'dog-tag-qr-portal': 10, 'car-bike-accident-wrong-parking-portal': 11, 'kids-safety-portal': 12,
+                'luggage-safety-portal': 13, 'real-estate-portal': 14, 'safety-older-people-portal': 15,
+                'digital-business-card-silver': 1, 'premium-business-card-printable': 2,
+                'smart-business-card-with-web-portal': 3, 'nfc-business-cards': 4,
+                'healthyfy-app': 1
+            };
+            orderedCategories.forEach(categoryName => {
+                const categoryProducts = products.filter(p => p.category === categoryName);
+                if (categoryProducts.length > 0) {
+                    homepageContent += `
+                        <h3 class="section-sub-title" style="text-align: center; margin-top: var(--spacing-xl); margin-bottom: var(--spacing-md); color: var(--accent-purple); font-size: 1.8em; text-shadow: none;">${categoryName}</h3>
+                        <div class="product-grid">
+                    `;
+                    const sortedProducts = categoryProducts.sort((a, b) => {
+                        return (productOrderMap[a.id] || 99) - (productOrderMap[b.id] || 99);
+                    });
+                    sortedProducts.forEach(product => {
+                        homepageContent += renderProductCard(product);
+                    });
+                    homepageContent += `
+                        </div>
+                    `;
+                }
+            });
+            homepageContent += `
+                </section>
+                <section class="add-on-features-section container mb-lg animate-on-scroll">
+                    <h2 class="section-title">Enhance Your Digital Ecosystem</h2>
+                    <div class="add-on-grid">
+                        <div class="add-on-card animate-on-scroll">
+                            <h4>YouTube Integration</h4>
+                            <p>Embed YouTube videos directly into your website or portal pages for rich media content.</p>
+                            <p class="price">Starts from ₹1000</p>
+                            <button class="btn-add-to-cart" onclick="addToCart('addon-youtube-integration-general', true, 1000, 'YouTube Integration')">Add this Feature</button>
+                        </div>
+                        <div class="add-on-card animate-on-scroll">
+                            <h4>Company News & Milestones</h4>
+                            <p>A dedicated section to highlight your company's latest news, achievements, and important updates.</p>
+                            <p class="price">Starts from ₹750</p>
+                             <button class="btn-add-to-cart" onclick="addToCart('addon-news-milestones', true, 750, 'Company News Section')">Add this Feature</button>
+                        </div>
+                         <div class="add-on-card animate-on-scroll">
+                            <h4>WhatsApp Integration</h4>
+                            <p>Allow visitors to easily connect with you via WhatsApp directly from your digital presence.</p>
+                            <p class="price">Starts from ₹500</p>
+                             <button class="btn-add-to-cart" onclick="addToCart('addon-whatsapp-integration', true, 500, 'WhatsApp Integration')">Add this Feature</button>
+                        </div>
+                    </div>
+                </section>
+                <!-- NEW OUR CLIENTS SECTION -->
+                <section class="container mb-lg animate-on-scroll" id="our-clients-section">
+                    <h2 class="section-title">OUR CLIENTS</h2>
+                    <div class="client-grid">
+                        ${clients.map(client => `
+                            <div class="client-card animate-on-scroll" onclick="navigateTo('client-detail', '${client.id}')">
+                                <img src="${client.imageUrl}" alt="${client.name} website screenshot" class="client-card-image">
+                                <h3>${client.name}</h3>
+                                <p>${client.description.substring(0, 80)}...</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </section>
+                <!-- END NEW OUR CLIENTS SECTION -->
+                <!-- NEW QUESTIONS? (FAQ) SECTION -->
+                <section class="container mb-lg animate-on-scroll faq-section">
+                    <h2 class="section-title">Questions?</h2>
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            Who is behind Zenora?
+                            <span class="icon">+</span>
+                        </div>
+                        <div class="accordion-content">
+                            <p>Zenora is proudly led by Rajith, a passionate and dedicated individual with a vision for digital innovation. He is supported by a team of experienced IT professional uncles, bringing a wealth of expertise and collective knowledge to every project. This blend of youthful passion and seasoned wisdom ensures creative, reliable, and cutting-edge solutions for all our clients.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            What if I'm not satisfied with the outcome?
+                            <span class="icon">+</span>
+                        </div>
+                        <div class="accordion-content">
+                            <p>Your satisfaction is our utmost priority. We commit 100% to understanding your vision and delivering results that exceed your expectations. We offer structured revision rounds during the project lifecycle to ensure your feedback is incorporated. Our goal is to achieve your complete satisfaction with the final deliverable.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            How fast will my project be delivered?
+                            <span class="icon">+</span>
+                        </div>
+                        <div class="accordion-content">
+                            <p>We strive for efficient and timely delivery. For most standard projects, you can expect your project to be delivered within approximately 2 weeks. Complex custom projects will have a detailed timeline provided during the consultation phase.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            Do you offer refunds?
+                            <span class="icon">+</span>
+                        </div>
+                        <div class="accordion-content">
+                            <p>Due to the dedicated time, specialized resources, and personalized effort we invest in each project from conception to completion, we are generally unable to offer refunds once work has commenced. We ensure clear communication and multiple approval stages throughout the process to align with your expectations and deliver a product you'll love.</p>
+                        </div>
+                    </div>
+                     <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            What kind of support do you offer after project completion?
+                            <span class="icon">+</span>
+                        </div>
+                        <div class="accordion-content">
+                            <p>We offer various levels of post-launch support, from basic bug fixes included for a limited period to comprehensive maintenance plans for ongoing updates, security, and performance optimization. Details will be outlined in your project agreement.</p>
+                        </div>
+                    </div>
+                     <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            Can I provide my own content and images?
+                            <span class="icon">+</span>
+                        </div>
+                        <div class="accordion-content">
+                            <p>Absolutely! We encourage clients to provide their own content (text, images, videos) as it best reflects their brand and message. If needed, we can also assist with content creation or sourcing high-quality stock assets, often as an additional service.</p>
+                        </div>
+                    </div>
+                </section>
+                <!-- END NEW QUESTIONS? (FAQ) SECTION -->
+<section id="about-us-section" class="section-padding content-center">
+    <h1 class="section-heading animate-on-scroll">About Zenora</h1>
+    <p class="section-subheading animate-on-scroll">Your Premier Partner in Digital Innovation</p>
+
+    <div class="about-widgets-container">
+        <div class="about-widget animate-on-scroll">
+            <h3 class="widget-heading">Welcome to Zenora</h3>
+            <p>Your premier partner in crafting sophisticated digital solutions. We are a visionary team dedicated to empowering individuals and businesses with cutting-edge web development, innovative digital portals, and revolutionary smart business cards.</p>
+        </div>
+
+        <div class="about-widget animate-on-scroll">
+            <h3 class="widget-heading">Our Mission</h3>
+            <p>Our mission is to seamlessly bridge your physical and digital presence, ensuring you stand out in an increasingly connected world. We believe in a mobile-first approach, designing every product to be inherently touch-responsive and intuitive.</p>
+        </div>
+
+        <div class="about-widget animate-on-scroll">
+            <h3 class="widget-heading">The Zenora Experience: 'Transition Pro Max'</h3>
+            <p>Our commitment extends to delivering 'Transition Pro Max' experiences across our entire ecosystem, with smooth animations, engaging hover effects, and a high-tech aesthetic that speaks volumes about your brand's forward-thinking nature.</p>
+        </div>
+
+        <div class="about-widget animate-on-scroll">
+            <h3 class="widget-heading">Your Digital Future, Built by Zenora</h3>
+            <p>From robust e-commerce platforms to personal branding portals and life-saving QR solutions, Zenora is where your digital future begins. Partner with us to build your online empire and innovate your digital footprint.</p>
+        </div>
+
+        <div class="about-widget animate-on-scroll rajith-story">
+            <h3 class="widget-heading">The Entrepreneurial Spark: Rajith's Vision</h3>
+            <p>Rajith always had an entrepreneurial mindset, driven by a passion for innovation and a keen eye for digital transformation. Zenora is the realization of this vision – his first significant step towards building an empire where technology empowers everyone.</p>
+        </div>
+
+        <div class="about-widget animate-on-scroll rajith-story">
+            <h3 class="widget-heading">Building Zenora: A Dedication to Impact</h3>
+            <p>From the initial spark of an idea to the meticulously crafted solutions, Zenora embodies Rajith's dedication to pushing boundaries and creating impactful digital experiences. This is just the beginning of a revolutionary journey.</p>
+        </div>
+    </div>
+</section>
+            `;
+            mainContent.innerHTML = homepageContent;
+            initializeCarousel();
+            initializeScrollAnimations();
+        }
+        /**
+         * Renders a page listing all products, categorized by their main headings.
+         */
+        function renderAllProductsPage() {
+            let allProductsHtml = `
+                <div class="container p-lg">
+                    <h1 class="section-title animate-on-scroll">All Our Products</h1>
+            `;
+            const categories = {};
+            products.forEach(product => {
+                if (!categories[product.category]) {
+                    categories[product.category] = [];
+                }
+                categories[product.category].push(product);
+            });
+            const orderedCategories = [
+                'Website Development',
+                'Portal',
+                'Digital & Smart Business Cards',
+                'Health'
+            ];
+            const productOrderMap = {
+                'website-lite': 1, 'website-standard': 2, 'website-premium': 3, 'website-pro-max': 4,
+                'portal-lite': 1, 'portal-plus': 2, 'portal-pro-max': 3, 'businessman-portal': 4,
+                'working-professional-portfolio-portal': 5, 'college-student-portal': 6,
+                'med-students-portal': 7, 'lawyers-advocates-portal': 8, 'doctors-web-portal': 9,
+                'dog-tag-qr-portal': 10, 'car-bike-accident-wrong-parking-portal': 11, 'kids-safety-portal': 12,
+                'luggage-safety-portal': 13, 'real-estate-portal': 14, 'safety-older-people-portal': 15,
+                'digital-business-card-silver': 1, 'premium-business-card-printable': 2,
+                'smart-business-card-with-web-portal': 3, 'nfc-business-cards': 4,
+                'healthyfy-app': 1
+            };
+            orderedCategories.forEach(categoryName => {
+                if (categories[categoryName] && categories[categoryName].length > 0) {
+                    allProductsHtml += `
+                        <section class="mb-lg animate-on-scroll">
+                            <h3 class="section-title" style="margin-top: var(--spacing-xl);">${categoryName}</h3>
+                            <div class="product-grid">
+                    `;
+                    const sortedProducts = categories[categoryName].sort((a, b) => {
+                        return (productOrderMap[a.id] || 99) - (productOrderMap[b.id] || 99);
+                    });
+                    sortedProducts.forEach(product => {
+                        allProductsHtml += renderProductCard(product);
+                    });
+                    allProductsHtml += `
+                            </div>
+                        </section>
+                    `;
+                }
+            });
+            allProductsHtml += `
+                </div>
+            `;
+            mainContent.innerHTML = allProductsHtml;
+            initializeScrollAnimations();
+        }
+        /**
+         * Renders the product listing page for a specific category.
+         * @param {string} category - The category of products to display.
+         */
+        function renderProductListingPage(category) {
+            renderHomePage();
+            setTimeout(() => {
+                const targetElement = document.getElementById('our-services-section');
+                if (targetElement) {
+                    const categoryHeading = Array.from(targetElement.querySelectorAll('.section-sub-title')).find(h3 => h3.textContent.includes(category));
+                    if (categoryHeading) {
+                        categoryHeading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } else {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            }, 100);
+        }
+        /**
+         * Renders the product detail page (PDP) for a specific product.
+         * @param {string} productId - The ID of the product to display.
+         */
+        function renderProductDetailPage(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) {
+                mainContent.innerHTML = `<div class="container p-lg"><h1 class="text-center" style="color: var(--error-red);">Product Not Found</h1><p class="text-center" style="color: var(--text-medium);">The product you are looking for does not exist.</p><button class="btn btn-primary mt-lg" onclick="navigateTo('home')">Go to Homepage</button></div>`;
+                return;
+            }
+            let ctaHtml = '';
+            // All CTA types now direct to Add to Cart or Free Download / View Demo
+            if (product.type === 'add-to-cart') {
+                ctaHtml = `
+                    <button class="btn btn-primary" onclick="addToCart('${product.id}')">${product.ctaText}</button>
+                    ${product.demoLink ? `<button class="btn btn-secondary mt-sm" onclick="openDemoModal('${product.demoLink}')">View Demo</button>` : ''}
+                `;
+            } else if (product.type === 'free-download') {
+                ctaHtml = `<a href="${product.demoLink}" target="_blank" class="btn btn-primary">${product.ctaText}</a>`;
+            }
+            // For products that were 'enquiry' or 'consultation', they will now fall under 'add-to-cart' logic.
+            // If there's no demoLink and it's not a free download, remove the 'View Demo' button.
+            if (!product.demoLink && (product.type === 'add-to-cart')) { // Simplified condition
+                ctaHtml = `<button class="btn btn-primary" onclick="addToCart('${product.id}')">${product.ctaText}</button>`;
+            }
+
+            const priceDisplay = typeof product.price === 'number'
+                ? `₹${product.price.toLocaleString('en-IN')}`
+                : product.price;
+
+            // Define add-on features section for PDP, if needed.
+            // For simplicity, reusing the existing add-on grid content.
+            const addOnsSection = `
+                <section class="add-on-features-section container mt-lg mb-lg animate-on-scroll">
+                    <h2 class="section-title">Consider These Add-on Features</h2>
+                    <div class="add-on-grid">
+                        <div class="add-on-card animate-on-scroll">
+                            <h4>YouTube Integration</h4>
+                            <p>Embed YouTube videos directly into your website or portal pages for rich media content.</p>
+                            <p class="price">Starts from ₹1000</p>
+                            <button class="btn-add-to-cart" onclick="addToCart('addon-youtube-integration-pdp', true, 1000, 'YouTube Integration')">Add this Feature</button>
+                        </div>
+                        <div class="add-on-card animate-on-scroll">
+                            <h4>Company News & Milestones</h4>
+                            <p>A dedicated section to highlight your company's latest news, achievements, and important updates.</p>
+                            <p class="price">Starts from ₹750</p>
+                            <button class="btn-add-to-cart" onclick="addToCart('addon-news-milestones-pdp', true, 750, 'Company News Section')">Add this Feature</button>
+                        </div>
+                        <div class="add-on-card animate-on-scroll">
+                            <h4>WhatsApp Integration</h4>
+                            <p>Allow visitors to easily connect with you via WhatsApp directly from your digital presence.</p>
+                            <p class="price">Starts from ₹500</p>
+                            <button class="btn-add-to-cart" onclick="addToCart('addon-whatsapp-integration-pdp', true, 500, 'WhatsApp Integration')">Add this Feature</button>
+                        </div>
+                    </div>
+                </section>
+            `;
+
+            mainContent.innerHTML = `
+                <div class="container p-lg">
+                    <button class="back-button animate-on-scroll" onclick="navigateTo('home'); return false;">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <div class="breadcrumbs animate-on-scroll">Home > <a href="#" onclick="navigateTo('product-listing', null, '${product.category}')">${product.category}</a> > ${product.title}</div>
+                    <div class="pdp-container animate-on-scroll">
+                        <div class="pdp-image-gallery">
+                            <img src="${product.image}" alt="${product.title}" class="main-product-image" id="mainProductImage">
+                            <div class="thumbnail-images">
+                                <img src="https://placehold.co/100x100/ADD8E6/000000?text=Mockup+2" alt="${product.title} thumbnail 2" class="thumbnail-image" onclick="changeMainImage(this)">
+                                <img src="https://placehold.co/100x100/90EE90/000000?text=Mockup+3" alt="${product.title} thumbnail 3" class="thumbnail-image" onclick="changeMainImage(this)">
+                            </div>
+                        </div>
+                        <div class="pdp-details">
+                            <h1>${product.title}</h1>
+                            <div class="rating">
+                                ${generateStarRating(Array.isArray(product.reviews) && product.reviews.length > 0 ? product.reviews.reduce((acc, r) => acc + r.rating, 0) / product.reviews.length : 0)}
+                                (${Array.isArray(product.reviews) ? product.reviews.length : 0} reviews)
+                            </div>
+                            <p class="price">${priceDisplay}</p>
+                            <p class="short-description">${product.shortDescription}</p>
+                            <div class="pdp-features">
+                                <h3>Key Differentiators:</h3>
+                                <ul>
+                                    ${product.keyDifferentiators.map(feature => `<li>${feature}</li>`).join('')}
+                                </ul>
+                            </div>
+                            <div class="pdp-cta-section">
+                                ${ctaHtml}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-tabs animate-on-scroll">
+                        <div class="tab-buttons">
+                            <button class="tab-button active" onclick="openTab(event, 'description')">Description</button>
+                            <button class="tab-button" onclick="openTab(event, 'specifications')">Specifications</button>
+                            <button class="tab-button" onclick="openTab(event, 'reviews')">Customer Reviews</button>
+                            <button class="tab-button" onclick="openTab(event, 'faqs')">FAQs</button>
+                        </div>
+                        <div id="description" class="tab-content">
+                            <h3>Product Overview</h3>
+                            <p>${product.description}</p>
+                        </div>
+                        <div id="specifications" class="tab-content hidden">
+                            <h3>Detailed Features & Comparison</h3>
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>Feature</th>
+                                        <th>${product.title}</th>
+                                        <th>${product.category === 'Website Development' && product.id !== 'website-pro-max' ? 'Website Pro Max' : (product.category === 'Portal' && product.id !== 'portal-pro-max' ? 'Portal Pro Max' : 'Zenora Standard Features')}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Custom Design</td><td>${product.keyDifferentiators.includes('Full Custom Development: 100% unique design and code.') ? 'Full Custom' : (product.keyDifferentiators.includes('Pre-defined Structure with Core Content Customization') ? 'Semi-Custom' : 'Standard Template')}</td><td>${product.id === 'website-pro-max' ? 'Full Custom' : (product.id === 'portal-pro-max' ? 'Enhanced Customization' : 'Varies by Tier')}</td></tr>
+                                    <tr><td>Analytics Dashboard</td><td>${product.keyDifferentiators.includes('Advanced Analytics Dashboard: Track views, clicks, engagement.') ? 'Yes' : 'No'}</td><td>${product.category === 'Portal' && product.id === 'portal-pro-max' ? 'Advanced' : 'Basic/No'}</td></tr>
+                                    <tr><td>YouTube Integration</td><td>${product.keyDifferentiators.includes('YouTube Integration (included)') ? 'Built-in' : 'No'}</td><td>${product.category === 'Website Development' && product.id === 'website-pro-max' ? 'Included' : 'Add-on'}</td></tr>
+                                    <tr><td>Priority Support</td><td>${product.keyDifferentiators.includes('Priority Support') ? 'Yes' : 'No'}</td><td>${product.category === 'Website Development' && product.id === 'website-pro-max' ? 'Included' : 'Add-on'}</td></tr>
+                                    <tr><td>CRM Integration</td><td>${product.keyDifferentiators.includes('CRM Integration') ? 'Yes' : 'No'}</td><td>${product.category === 'Website Development' && product.id === 'website-pro-max' ? 'Included' : 'No'}</td></tr>
+                                    <tr><td>E-commerce Functionality</td><td>${product.keyDifferentiators.includes('Custom E-commerce Functionality') ? 'Yes' : 'No'}</td><td>${product.category === 'Website Development' && product.id === 'website-pro-max' ? 'Included' : 'No'}</td></tr>
+                                    <tr><td>Mobile-Friendly (Responsive)</td><td>Yes</td><td>Yes</td></tr>
+                                    <tr><td>Secure Data Handling</td><td>${product.keyDifferentiators.includes('Secure and privacy-focused data access') || product.keyDifferentiators.includes('Secure Data Handling Practices') ? 'Yes' : 'Standard'}</td><td>Yes</td></tr>
+                                    <tr><td>Price</td><td>${priceDisplay}</td><td>${product.category === 'Website Development' ? (product.id === 'website-pro-max' ? 'Consultation' : '₹12,000+') : (product.category === 'Portal' ? (product.id === 'portal-pro-max' ? '₹2,999+' : '₹999+') : 'Varies')}</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="reviews" class="tab-content hidden">
+                            <h3>Customer Reviews (${Array.isArray(product.reviews) ? product.reviews.length : 0})</h3>
+                            ${Array.isArray(product.reviews) && product.reviews.length > 0 ? product.reviews.map(review => `
+                                <div class="review-item" style="border-bottom: 1px dashed rgba(0, 191, 255, 0.1); padding-bottom: 15px; margin-bottom: 15px;">
+                                    <div class="rating" style="margin-bottom: 5px;">${generateStarRating(review.rating)}</div>
+                                    <p style="font-style: italic; color: var(--text-medium); margin-bottom: 8px;">"${review.text}"</p>
+                                    <p style="font-weight: bold; font-size: 0.9em; color: var(--text-light);">- ${review.author}</p>
+                                </div>
+                            `).join('') : '<p style="color: var(--text-medium);">No reviews yet. Be the first to review this product!</p>'}
+                        </div>
+                        <div id="faqs" class="tab-content hidden">
+                            <h3>Frequently Asked Questions</h3>
+                            <div class="faq-item">
+                                <p style="color: var(--text-light); font-weight: 600;">Q: How long does it take to develop a Custom Website (Pro Max)?</p>
+                                <p style="color: var(--text-medium);">A: Development time for Pro Max is customized based on your specific requirements and scope. We'll provide a detailed timeline after your consultation, typically ranging from 8-16 weeks depending on complexity.</p>
+                            </div>
+                            <div class="faq-item">
+                                <p style="color: var(--text-light); font-weight: 600;">Q: Can I upgrade my Portal Lite to Portal Plus or Pro Max later?</p>
+                                <p style="color: var(--text-medium);">A: Yes, most of our portal products are designed for seamless upgrades. We offer clear upgrade paths, allowing you to scale your digital presence as your needs grow. Contact our support team for details and pricing.</p>
+                            </div>
+                             <div class="faq-item">
+                                <p style="color: var(--text-light); font-weight: 600;">Q: Are the demo links functional and represent live products?</p>
+                                <p style="color: var(--text-medium);">A: The demo links provided are illustrative placeholders to give you an idea of the product's layout and functionality. In a real scenario, they would link to live, interactive examples of the products we've developed or sample layouts.</p>
+                            </div>
+                             <div class="faq-item">
+                                <p style="color: var(--text-light); font-weight: 600;">Q: How does the NFC Business Card work?</p>
+                                <p style="color: var(--text-medium);">A: Our NFC Business Cards contain a Near Field Communication chip. When tapped against a compatible smartphone (most modern smartphones), it instantly shares your digital profile, contact details, social links, and more without needing an app. It's a quick and impressive way to network!</p>
+                            </div>
+                        </div>
+                    </div>
+                    ${addOnsSection}
+                    <section class="container mt-lg animate-on-scroll">
+                        <h2 class="section-title">Customers Also Viewed</h2>
+                        <div class="product-grid">
+                            ${products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4).map(product => renderProductCard(product)).join('')}
+                            ${products.filter(p => p.category !== product.category).slice(0, 2).map(product => renderProductCard(product)).join('')}
+                        </div>
+                    </section>
+                </div>
+            `;
+            const firstTabButton = document.querySelector('.tab-button');
+            if (firstTabButton) {
+                firstTabButton.click();
+            }
+            initializeScrollAnimations();
+        }
+        /**
+         * Renders the client detail page for a specific client.
+         * @param {string} clientId - The ID of the client to display.
+         */
+        function renderClientDetailPage(clientId) {
+            const client = clients.find(c => c.id === clientId);
+            if (!client) {
+                mainContent.innerHTML = `<div class="container p-lg"><h1 class="text-center" style="color: var(--error-red);">Client Not Found</h1><p class="text-center" style="color: var(--text-medium);">The client details you are looking for do not exist.</p><button class="btn btn-primary mt-lg" onclick="navigateTo('home')">Go to Homepage</button></div>`;
+                return;
+            }
+            function renderStack(stackArray) {
+                const stackMap = {
+                    'html': { icon: 'fa-html5', text: 'HTML', color: '#e34c26' },
+                    'css': { icon: 'fa-css3-alt', text: 'CSS', color: '#264de4' },
+                    'javascript': { icon: 'fa-js', text: 'JavaScript', color: '#f7df1e' },
+                    'react': { icon: 'fa-react', text: 'React', color: '#61dafb' },
+                    'firebase': { icon: 'fa-fire', text: 'Firebase', color: '#ffca28', fontAwesomeWeight: 900 },
+                    'vercel': { icon: 'fa-globe', text: 'Vercel', color: '#000', backgroundColor: '#fff', borderRadius: '50%', padding: '2px', fontAwesomeWeight: 900},
+                    'github': { icon: 'fa-github', text: 'GitHub Pages', color: '#fff' }
+                };
+                return stackArray.map(tech => {
+                    const info = stackMap[tech];
+                    if (info) {
+                        const style = info.color ? `color: ${info.color};` : '';
+                        const bgColor = info.backgroundColor ? `background-color: ${info.backgroundColor};` : '';
+                        const borderRadius = info.borderRadius ? `border-radius: ${info.borderRadius};` : '';
+                        const padding = info.padding ? `padding: ${info.padding};` : '';
+                        const fontWeight = info.fontAwesomeWeight ? `font-weight: ${info.fontAwesomeWeight};` : '';
+                        return `<span class="stack-item"><i class="fab ${info.icon}" style="${style} ${bgColor} ${borderRadius} ${padding} ${fontWeight}"></i>${info.text}</span>`;
+                    }
+                    return '';
+                }).join('');
+            }
+            mainContent.innerHTML = `
+                <div class="container p-lg animate-on-scroll">
+                    <button class="back-button animate-on-scroll" onclick="navigateTo('home'); return false;">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <div class="breadcrumbs animate-on-scroll">Home > <a href="#" onclick="navigateTo('home'); return false;">Our Clients</a> > ${client.name}</div>
+                    <div class="client-detail-container animate-on-scroll">
+                        <div class="client-detail-header">
+                            <h1>${client.name}</h1>
+                        </div>
+                        <div class="client-detail-image-wrapper">
+                            <img src="${client.imageUrl}" alt="${client.name} website" class="client-detail-main-image">
+                            <p class="mt-md" style="text-align: justify; color: var(--text-light);">${client.description}</p>
+                            <a href="${client.websiteUrl}" target="_blank" class="btn btn-primary mt-md">Visit Website</a>
+                        </div>
+                        <div class="client-info-grid">
+                            <div><strong>Client Name:</strong> ${client.name}</div>
+                            <div><strong>Turnover:</strong> ${client.turnover}</div>
+                            <div style="grid-column: 1 / -1;"><strong>Stack:</strong> ${renderStack(client.stack)}</div>
+                        </div>
+                    </div>
+                    <!-- Other Clients Section (Marquee of Testimonials) -->
+<section class="testimonials-section animate-on-scroll">
+                        <h2 class="section-title text-center" style="margin-bottom: var(--spacing-md);">FEEDBACKS</h2>                         <div class="marquee-container">
+                            <div class="marquee-inner">
+                                ${testimonialsData.map(t => `
+                                    <div class="testimonial-item-marquee">
+                                        <p class="testimonial-text">"${t.text}"</p>
+                                        <p class="testimonial-author">- ${t.author}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `;
+            initializeScrollAnimations();
+        }
+        /**
+         * Renders the shopping cart page.
+         */
+        function renderCartPage() {
+            mainContent.innerHTML = `
+                <div class="container p-lg animate-on-scroll">
+                    <h1 class="section-title">Your Shopping Cart</h1>
+                    <div class="cart-page-content">
+                        <div class="cart-items" id="cartItemsContainer">
+                            ${cart.length === 0 ? '<p class="text-center" style="color: var(--text-medium);">Your cart is empty. <a href="#" onclick="navigateTo(\'home\')" style="color: var(--accent-blue); text-decoration: underline;">Start shopping!</a></p>' : ''}
+                        </div>
+                        <div class="cart-summary" id="cartSummary">
+                            <h3>Order Summary</h3>
+                            <div class="summary-row">
+                                <span>Subtotal:</span>
+                                <span id="cartSubtotal">₹0.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Shipping:</span>
+                                <span>Free</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total:</span>
+                                <span id="cartTotal">₹0.00</span>
+                            </div>
+                            <button class="btn btn-checkout" onclick="proceedToCheckout()">Proceed to Checkout</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            updateCartDisplay();
+            initializeScrollAnimations();
+        }
+        /**
+         * Renders a single product card HTML for use in listings and grids.
+         * @param {object} product - The product object.
+         * @returns {string} HTML string of the product card.
+         */
+        function renderProductCard(product) {
+            let buttonHtml = '';
+            const priceText = typeof product.price === 'number' ? `₹${product.price.toLocaleString('en-IN')}` : product.price;
+            if (product.type === 'add-to-cart') {
+                buttonHtml = `<button class="btn btn-primary" onclick="addToCart('${product.id}')">Add to Cart</button>`;
+            } else if (product.type === 'free-download') {
+                buttonHtml = `<a href="${product.demoLink}" target="_blank" class="btn btn-primary">${product.ctaText}</a>`;
+            }
+            return `
+                <div class="product-card animate-on-scroll">
+                    <img src="${product.image}" alt="${product.title}" class="product-card-image">
+                    <div class="product-card-content">
+                        <h3>${product.title}</h3>
+                        <p class="description-snippet">${product.shortDescription}</p>
+                        <div class="rating">${generateStarRating(Array.isArray(product.reviews) && product.reviews.length > 0 ? product.reviews.reduce((acc, r) => acc + r.rating, 0) / product.reviews.length : 0)}</div>
+                        <p class="product-card-price">${priceText}</p>
+                        <div class="product-card-actions">
+                            <button class="btn btn-secondary" onclick="navigateTo('product-detail', '${product.id}')">View Details</button>
+                            ${buttonHtml}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        // --- Carousel Logic for Hero Section ---
+        let currentSlide = 0;
+        let heroCarouselInterval;
+        const carouselItems = () => document.querySelectorAll('#heroCarousel .carousel-item');
+        const carouselDots = () => document.querySelectorAll('#carouselDots .dot');
+        /**
+         * Initializes the hero carousel, setting up auto-play and dot navigation.
+         * Clears any existing interval to prevent duplicates on re-renders.
+         */
+        function initializeCarousel() {
+            if (heroCarouselInterval) clearInterval(heroCarouselInterval);
+            const items = carouselItems();
+            const dots = carouselDots();
+            if (items.length === 0) return;
+            showSlide(currentSlide);
+            dots.forEach(dot => {
+                dot.onclick = function() {
+                    currentSlide = parseInt(this.dataset.index);
+                    showSlide(currentSlide);
+                    if (heroCarouselInterval) clearInterval(heroCarouselInterval);
+                    heroCarouselInterval = setInterval(nextSlide, 5000);
+                };
+            });
+            heroCarouselInterval = setInterval(nextSlide, 5000);
+        }
+        /**
+         * Displays a specific slide in the hero carousel.
+         * @param {number} index - The index of the slide to show.
+         */
+        function showSlide(index) {
+            const items = carouselItems();
+            const dots = carouselDots();
+            if (items.length === 0) return;
+            items.forEach((item, i) => {
+                item.style.transform = `translateX(-${index * 100}%)`;
+                if (i === index) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+            dots.forEach((dot, i) => {
+                if (i === index) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+        /**
+         * Advances the hero carousel to the next slide.
+         */
+        function nextSlide() {
+            const items = carouselItems();
+            if (items.length === 0) return;
+            currentSlide = (currentSlide + 1) % items.length;
+            showSlide(currentSlide);
+        }
+        // --- Tabbed Content Logic (for Product Detail Page) ---
+        /**
+         * Handles switching between tabs on the Product Detail Page.
+         * @param {Event} evt - The click event.
+         * @param {string} tabName - The ID of the tab content to display.
+         */
+        function openTab(evt, tabName) {
+            const tabcontent = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.add('hidden');
+            }
+            const tablinks = document.getElementsByClassName("tab-button");
+            for (let i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.remove('hidden');
+            evt.currentTarget.classList.add("active");
+        }
+        // --- FAQ Accordion Logic ---
+        function toggleAccordion(header) {
+            header.classList.toggle('active');
+            const content = header.nextElementSibling;
+            if (content.classList.contains('active')) {
+                content.classList.remove('active');
+                content.style.maxHeight = null;
+            } else {
+                document.querySelectorAll('.accordion-content.active').forEach(openContent => {
+                    if (openContent !== content && openContent.closest('.faq-section') === header.closest('.faq-section')) {
+                        openContent.classList.remove('active');
+                        openContent.style.maxHeight = null;
+                        openContent.previousElementSibling.classList.remove('active');
+                    }
+                });
+                content.classList.add('active');
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        }
+        // --- Live Background Animation (Particles) ---
+        const canvas = document.getElementById('backgroundCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const numParticles = 100;
+        const particleSize = 1.5;
+        const particleSpeed = 0.5;
+        /**
+         * Resizes the canvas to fill the window and re-initializes particles.
+         */
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            initParticles();
+        }
+        /**
+         * Initializes the array of particles with random positions, sizes, speeds, and colors.
+         */
+        function initParticles() {
+            for (let i = 0; i < numParticles; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * particleSize + 0.5,
+                    speedX: (Math.random() - 0.5) * particleSpeed,
+                    speedY: (Math.random() - 0.5) * particleSpeed,
+                    color: `rgba(0, 191, 255, ${Math.random() * 0.7 + 0.3})`
+                });
+            }
+        }
+        /**
+         * Draws and updates the position of each particle.
+         */
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.shadowColor = p.color;
+                ctx.shadowBlur = p.size * 5;
+                ctx.fill();
+                p.x += p.speedX;
+                p.y += p.speedY;
+                if (p.x < 0 - p.size) p.x = canvas.width + p.size;
+                if (p.x > canvas.width + p.size) p.x = 0 - p.size;
+                if (p.y < 0 - p.size) p.y = canvas.height + p.size;
+                if (p.y > canvas.height + p.size) p.y = 0 - p.size;
+            }
+        }
+        /**
+         * Animation loop for the background particles.
+         */
+        function animateBackground() {
+            drawParticles();
+            requestAnimationFrame(animateBackground);
+        }
+        // --- Scroll-in Animations using Intersection Observer ---
+        let observer;
+        /**
+         * Initializes the Intersection Observer to detect when elements enter the viewport
+         * and apply the 'is-visible' class for animations.
+         */
+        function initializeScrollAnimations() {
+            if (observer) {
+                observer.disconnect();
+            }
+            const animateElements = document.querySelectorAll('.animate-on-scroll');
+            observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            });
+            animateElements.forEach(element => {
+                observer.observe(element);
+            });
+        }
+        // --- Pre-loader Logic ---
+        const zenoraPreloader = document.getElementById('zenora-preloader');
+        /**
+         * Hides the Zenora pre-loader smoothly after its animation.
+         */
+        function hideZenoraPreloader() {
+            zenoraPreloader.classList.add('zenora-preloader-fade-out');
+            zenoraPreloader.addEventListener('animationend', (event) => {
+                if (event.animationName === 'fadeOut') {
+                    zenoraPreloader.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            }, { once: true });
+        }
+        // --- Initial Load Sequence ---
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartCount();
+            navigateTo('home');
+            resizeCanvas();
+            animateBackground();
+            setTimeout(() => {
+                hideZenoraPreloader();
+            }, 1500);
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', (event) => {
+                    if (event.target === modal) {
+                        closeModal(modal.id);
+                    }
+                });
+            });
+        });
+        window.addEventListener('resize', resizeCanvas);
+
+        // NEW CHATBOT SCRIPT START
         document.addEventListener('DOMContentLoaded', () => {
             const robotInteractionArea = document.getElementById('robot-interaction-area'); // The main clickable area (button)
             const iframeContainer = document.getElementById('chatbot-iframe-container');
@@ -277,7 +3679,9 @@
                     };
                     robotImage.addEventListener('animationend', onIntroFlipEnd);
                 } else {
-                    updateRobotAnimations(); // If intro flip already played, apply hover and schedule periodic flip immediately
+                    // If introductory message has been shown, ensure it's hidden and play robot flip
+                    introductoryMessageWidget.style.opacity = '0';
+                    updateRobotAnimations(); // Directly play the robot flip
                 }
             };
 
@@ -329,6 +3733,7 @@
                 playInitialRobotFlip(); // Directly play the robot flip
             }
         });
+        // NEW CHATBOT SCRIPT END
     </script>
 </body>
 </html>
